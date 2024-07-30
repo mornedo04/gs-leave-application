@@ -4,119 +4,117 @@ import { useState, useEffect } from "react";
 import { Radio, Datepicker, Flowbite, Label } from "flowbite-react";
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
-import PizZipUtils from 'pizzip/utils/index.js';
+import PizZipUtils from "pizzip/utils/index.js";
 import { saveAs } from "file-saver";
 import expressionParser from "docxtemplater/expressions";
-
 
 import gsLogo from "./images/gs-inima-Transparent.png";
 
 function App() {
   const [options, setOptions] = useState([]);
-    const [employeeList, setEmployeeList] = useState({});
-    const [empID, setEmpID] = useState("");
-    const [empJobTitle, setEmpJobTitle] = useState("");
-    const [empDOJ, setEmpDOJ] = useState("");
-    const [empLocation, setEmpLocation] = useState("");
-      const [subData, setSubData] = useState({});
-  
-    useEffect(() => {
-      fetch(
-        "https://sheets.googleapis.com/v4/spreadsheets/18YH_yqURS0HweGXsMqNDD7MLG3k3iCBHjRVU0YQoGbE/values/Sheet1?key=AIzaSyAAWbrLACiAaQJLFbmApP-1zqrVe9zA3Ug"
-      )
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          // console.log(data["values"]);
-          const results = [];
-          const dicResult = {};
-          data["values"].forEach((value) => {
-            if (value[1] !== "Emp Name") {
-              results.push({
-                key: value[1],
-                value: value[0],
-              });
-              dicResult[value[0]] = [value[3], value[2], value[9]];
-            }
-          });
-          setOptions([{ key: "Employee Name", value: "" }, ...results]);
-          setEmployeeList(dicResult);
-          // setPhotos(data);
-        });
-    }, []);
-  
-    function loadFile(url, callback) {
-      PizZipUtils.getBinaryContent(url, callback);
-    }
-  
-  
-    function handleChange(e) {
-      // console.log(employeeList["S400069-EX"])
-      setEmpID(e.target.value);
-  
-      setEmpJobTitle(employeeList[e.target.value][0]);
-      setEmpDOJ(employeeList[e.target.value][1]);
-      setEmpLocation(employeeList[e.target.value][2]);
-    }
-  
-    function handleSubmit(event) {
-      event.preventDefault();
-      const countriesRet = event.target.countries.value;
-      console.log(countriesRet)
-      loadFile(
-        "https://lionfish-app-zi2iv.ondigitalocean.app/doc/template.docx",
-        function (error, content) {
-          if (error) {
-            throw error;
+  const [employeeList, setEmployeeList] = useState({});
+  const [empID, setEmpID] = useState("");
+  const [empJobTitle, setEmpJobTitle] = useState("");
+  const [empDOJ, setEmpDOJ] = useState("");
+  const [empLocation, setEmpLocation] = useState("");
+
+  useEffect(() => {
+    fetch(
+      "https://sheets.googleapis.com/v4/spreadsheets/18YH_yqURS0HweGXsMqNDD7MLG3k3iCBHjRVU0YQoGbE/values/Sheet1?key=AIzaSyAAWbrLACiAaQJLFbmApP-1zqrVe9zA3Ug"
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        // console.log(data["values"]);
+        const results = [];
+        const dicResult = {};
+        data["values"].forEach((value) => {
+          if (value[1] !== "Emp Name") {
+            results.push({
+              key: value[1],
+              value: value[0],
+            });
+            dicResult[value[0]] = [value[3], value[2], value[9]];
           }
-          const zip = new PizZip(content);
-          const doc = new Docxtemplater(zip, {
-            paragraphLoop: true,
-            linebreaks: true,
-            parser: expressionParser,
-          });
-          doc.render({
-            AL: countriesRet === "AL" ? "X" : "",
-            SL: countriesRet === "SL" ? "X" : "",
-            RL: countriesRet === "RL" ? "X" : "",
-            EL: countriesRet === "EL" ? "X" : "",
-            PL: countriesRet === "PL" ? "X" : "",
-            CL: countriesRet === "CL" ? "X" : "",
-            name: event.target.empName.value,
-            emp_no: event.target.empID.value,
-            job_title: event.target.empJobTitle.value,
-            doj: event.target.empDOJ.value,
-            location: event.target.empLocation.value,
-            expiration: "",
-            address: event.target.empHomeAddress.value,
-            uae_contact: event.target.empLocalNumber.value,
-            home_contact: event.target.empHomeNumber.value,
-            start_date: event.target.leave_start_date.value,
-            end_date: event.target.leave_end_date.value,
-            outgoing_date: event.target.outgoing_travel_date.value,
-            incoming_date: event.target.incoming_travel_date.value,
-            ex_day: event.target.leaveDays.value,
-            in_day: event.target.totalDays.value,
-            comp: event.target.flight_booking.value === "COMPANY" ? "X" : "",
-            own: event.target.flight_booking.value === "OWN" ? "X" : "",
-            dep_date: event.target.ticket_departure_date.value,
-            dep_airline: event.target.departure_airline.value,
-            dep_sector: event.target.departure_sector.value,
-            ret_date: event.target.ticket_arrival_date.value,
-            ret_airline: event.target.arrival_airline.value,
-            ret_sector: event.target.arrival_sector.value,
-          });
-  
-          const out = doc.getZip().generate({
-            type: 'blob',
-            mimeType:
-              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-          }); //Output the document using Data-URI
-          saveAs(out, empID.concat("output.docx"));
+        });
+        setOptions([{ key: "Employee Name", value: "" }, ...results]);
+        setEmployeeList(dicResult);
+        // setPhotos(data);
+      });
+  }, []);
+
+  function loadFile(url, callback) {
+    PizZipUtils.getBinaryContent(url, callback);
+  }
+
+  function handleChange(e) {
+    // console.log(employeeList["S400069-EX"])
+    setEmpID(e.target.value);
+
+    setEmpJobTitle(employeeList[e.target.value][0]);
+    setEmpDOJ(employeeList[e.target.value][1]);
+    setEmpLocation(employeeList[e.target.value][2]);
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const countriesRet = event.target.countries.value;
+    console.log(countriesRet);
+    loadFile(
+      "https://lionfish-app-zi2iv.ondigitalocean.app/doc/template.docx",
+      function (error, content) {
+        if (error) {
+          throw error;
         }
-      );
-    }
+        const zip = new PizZip(content);
+        const doc = new Docxtemplater(zip, {
+          paragraphLoop: true,
+          linebreaks: true,
+          parser: expressionParser,
+        });
+        doc.render({
+          AL: countriesRet === "AL" ? "X" : "",
+          SL: countriesRet === "SL" ? "X" : "",
+          RL: countriesRet === "RL" ? "X" : "",
+          EL: countriesRet === "EL" ? "X" : "",
+          PL: countriesRet === "PL" ? "X" : "",
+          CL: countriesRet === "CL" ? "X" : "",
+          name: event.target.empName.value,
+          emp_no: event.target.empID.value,
+          job_title: event.target.empJobTitle.value,
+          doj: event.target.empDOJ.value,
+          location: event.target.empLocation.value,
+          expiration: "",
+          address: event.target.empHomeAddress.value,
+          uae_contact: event.target.empLocalNumber.value,
+          home_contact: event.target.empHomeNumber.value,
+          start_date: event.target.leave_start_date.value,
+          end_date: event.target.leave_end_date.value,
+          outgoing_date: event.target.outgoing_travel_date.value,
+          incoming_date: event.target.incoming_travel_date.value,
+          ex_day: event.target.leaveDays.value,
+          in_day: event.target.totalDays.value,
+          remarks: event.target.remarks.value,
+          comp: event.target.flight_booking.value === "COMPANY" ? "X" : "",
+          own: event.target.flight_booking.value === "OWN" ? "X" : "",
+          dep_date: event.target.ticket_departure_date.value,
+          dep_airline: event.target.departure_airline.value,
+          dep_sector: event.target.departure_sector.value,
+          ret_date: event.target.ticket_arrival_date.value,
+          ret_airline: event.target.arrival_airline.value,
+          ret_sector: event.target.arrival_sector.value,
+        });
+
+        const out = doc.getZip().generate({
+          type: "blob",
+          mimeType:
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        }); //Output the document using Data-URI
+        saveAs(out, empID.concat("output.docx"));
+      }
+    );
+  }
 
   return (
     <Flowbite theme={{ mode: "dark" }}>
@@ -267,7 +265,7 @@ function App() {
                   />
                 </span>
                 <input
-                  type="text"
+                  type="number"
                   name="leaveDays"
                   id="website-admin"
                   className="block w-full min-w-0 flex-1 rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
@@ -284,11 +282,27 @@ function App() {
                   />
                 </span>
                 <input
-                  type="text"
+                  type="number"
                   name="totalDays"
                   id="website-admin"
                   className="block w-full min-w-0 flex-1 rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                   placeholder="Days"
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-5 md:col-span-2">
+                <span className="inline-flex items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
+                  <Label
+                    htmlFor="remarks"
+                    value="Remark / Comments"
+                  />
+                </span>
+                <input
+                  type="text"
+                  name="remarks"
+                  id="website-admin"
+                  className="block col-span-1 md:col-span-4 w-full min-w-0 flex-1 rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  placeholder=""
                   required
                 />
               </div>
@@ -300,12 +314,12 @@ function App() {
               </h2>
               <Label className="col-span-2" value="BOOKING TO BE MADE BY:" />
               <div className="flex items-center gap-2">
-                <Radio name="flight_booking" value="COMPANY" required />
+                <Radio name="flight_booking" value="COMPANY" />
                 <Label htmlFor="flightCompany" value="COMPANY" />
               </div>
 
               <div className="flex items-center gap-2">
-                <Radio name="flight_booking" value="OWN" required />
+                <Radio name="flight_booking" value="OWN" />
                 <Label htmlFor="flightOwn" value="OWN" />
               </div>
 
