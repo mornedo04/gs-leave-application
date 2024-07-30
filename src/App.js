@@ -65,7 +65,7 @@ function App() {
       const countriesRet = event.target.countries.value;
       console.log(countriesRet)
       loadFile(
-        "http://localhost:3000/doc/template.docx",
+        "https://lionfish-app-zi2iv.ondigitalocean.app/doc/template.docx",
         function (error, content) {
           if (error) {
             throw error;
