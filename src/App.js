@@ -241,23 +241,18 @@ function App() {
               <div className="text-gray-200 md:order-3">
                 <Label htmlFor="date2" value="Leave End Date" />
                 <Datepicker
-                  placeholder="Test"
                   name="leave_end_date"
                 />
               </div>
               <div className="text-gray-200 md:order-2">
                 <Label htmlFor="date3" value="Outgoing Travel Date" />
                 <Datepicker
-                  className="w-full bg-gray-700 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  placeholder="Test"
                   name="outgoing_travel_date"
                 />
               </div>
               <div className="text-gray-200 md:order-4">
                 <Label htmlFor="date4" value="Incoming Travel Date" />
                 <Datepicker
-                  className="w-full bg-gray-700 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  placeholder="Test"
                   name="incoming_travel_date"
                 />
               </div>
@@ -294,7 +289,7 @@ function App() {
                   required
                 />
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-5 md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-5 md:col-span-2 md:order-7">
                 <span className="inline-flex items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
                   <Label
                     htmlFor="remarks"
