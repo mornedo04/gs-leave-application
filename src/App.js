@@ -1,7 +1,7 @@
 // import logo from "./logo.svg";
 import "./App.css";
 import { useState, useEffect } from "react";
-import { Radio, Datepicker, Flowbite, Label } from "flowbite-react";
+import { Radio, Datepicker, Flowbite, Label, Card } from "flowbite-react";
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 import PizZipUtils from "pizzip/utils/index.js";
@@ -114,6 +114,11 @@ function App() {
         saveAs(out, empID.concat("output.docx"));
       }
     );
+  }
+
+  function handleDateChange(event) {
+    console.log("Hello")
+    console.log(event.value);
   }
 
   return (
@@ -229,19 +234,18 @@ function App() {
               <h2 className="text-lg font-bold text-gray-200 md:col-span-2">
                 C. Request Leave
               </h2>
-              <div className="text-gray-200">
+              <div className="text-gray-200 md:order-1">
                 <Label htmlFor="date1" value="Leave Start Date" />
                 <Datepicker name="leave_start_date" />
               </div>
-              <div className="text-gray-200">
+              <div className="text-gray-200 md:order-3">
                 <Label htmlFor="date2" value="Leave End Date" />
                 <Datepicker
-                  className="w-full bg-gray-700 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   placeholder="Test"
                   name="leave_end_date"
                 />
               </div>
-              <div className="text-gray-200">
+              <div className="text-gray-200 md:order-2">
                 <Label htmlFor="date3" value="Outgoing Travel Date" />
                 <Datepicker
                   className="w-full bg-gray-700 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -249,7 +253,7 @@ function App() {
                   name="outgoing_travel_date"
                 />
               </div>
-              <div className="text-gray-200">
+              <div className="text-gray-200 md:order-4">
                 <Label htmlFor="date4" value="Incoming Travel Date" />
                 <Datepicker
                   className="w-full bg-gray-700 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
@@ -257,7 +261,7 @@ function App() {
                   name="incoming_travel_date"
                 />
               </div>
-              <div className="flex">
+              <div className="flex md:order-5">
                 <span className="inline-flex w-4/5 items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
                   <Label
                     htmlFor="daycount1"
@@ -274,7 +278,7 @@ function App() {
                 />
               </div>
 
-              <div className="flex">
+              <div className="flex md:order-6">
                 <span className="inline-flex w-4/5 items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
                   <Label
                     htmlFor="daycount2"
@@ -308,7 +312,7 @@ function App() {
               </div>
             </section>
 
-            <section className="mt-6 grid grid-cols-4 gap-4">
+            <section className="mt-6 grid grid-cols-4 gap-4  md:order-7">
               <h2 className="col-span-4 text-lg font-bold text-gray-200">
                 D. Flight Booking
               </h2>
@@ -330,6 +334,7 @@ function App() {
               <Label className="col-span-4 md:col-span-1" value="Departure" />
               <Datepicker
                 className="col-span-2 w-full bg-gray-700 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 md:col-span-1"
+                onChange={handleDateChange}
                 name="ticket_departure_date"
               />
               <input
