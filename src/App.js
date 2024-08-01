@@ -17,6 +17,7 @@ function App() {
   const [empJobTitle, setEmpJobTitle] = useState("");
   const [empDOJ, setEmpDOJ] = useState("");
   const [empLocation, setEmpLocation] = useState("");
+  const [minDate, setMinDate] = useState(new Date())
 
   useEffect(() => {
     fetch(
@@ -111,14 +112,15 @@ function App() {
           mimeType:
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         }); //Output the document using Data-URI
-        saveAs(out, empID.concat("output.docx"));
+        saveAs(out, empID.concat(".docx"));
       }
     );
   }
 
   function handleDateChange(event) {
     console.log("Hello")
-    console.log(event.value);
+    console.log(Date.parse(event));
+    setMinDate(Date.parse(event));
   }
 
   return (
@@ -236,23 +238,29 @@ function App() {
               </h2>
               <div className="text-gray-200 md:order-1">
                 <Label htmlFor="date1" value="Leave Start Date" />
-                <Datepicker name="leave_start_date" />
+                <Datepicker
+                  // onSelectedDateChanged={handleDateChange}
+                  // minDate={minDate} 
+                  name="leave_start_date" />
               </div>
               <div className="text-gray-200 md:order-3">
                 <Label htmlFor="date2" value="Leave End Date" />
                 <Datepicker
+                  // minDate={minDate}
                   name="leave_end_date"
                 />
               </div>
               <div className="text-gray-200 md:order-2">
                 <Label htmlFor="date3" value="Outgoing Travel Date" />
                 <Datepicker
+                  // minDate={minDate}
                   name="outgoing_travel_date"
                 />
               </div>
               <div className="text-gray-200 md:order-4">
                 <Label htmlFor="date4" value="Incoming Travel Date" />
                 <Datepicker
+                  // minDate={minDate}
                   name="incoming_travel_date"
                 />
               </div>
@@ -327,6 +335,7 @@ function App() {
               <Label className="" value="Sector" />
               <Label className="col-span-4 md:col-span-1" value="Departure" />
               <Datepicker
+                  minDate={minDate}
                 className="col-span-2 w-full bg-gray-700 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 md:col-span-1"
                 onChange={handleDateChange}
                 name="ticket_departure_date"
@@ -345,6 +354,7 @@ function App() {
               />
               <Label className="col-span-4 md:col-span-1" value="Return" />
               <Datepicker
+                  minDate={minDate}
                 className="col-span-2 w-full bg-gray-700 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 md:col-span-1"
                 name="ticket_arrival_date"
               />
