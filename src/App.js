@@ -14,6 +14,7 @@ function App() {
   const [options, setOptions] = useState([]);
   const [employeeList, setEmployeeList] = useState({});
   const [empID, setEmpID] = useState("");
+  const [empName, setEmpName] = useState("");
   const [empJobTitle, setEmpJobTitle] = useState("");
   const [empDOJ, setEmpDOJ] = useState("");
   const [empLocation, setEmpLocation] = useState("");
@@ -36,7 +37,7 @@ function App() {
               key: value[1],
               value: value[0],
             });
-            dicResult[value[0]] = [value[3], value[2], value[9]];
+            dicResult[value[0]] = [value[1], value[3], value[2], value[9]];
           }
         });
         setOptions([{ key: "Employee Name", value: "" }, ...results]);
@@ -52,10 +53,10 @@ function App() {
   function handleChange(e) {
     // console.log(employeeList["S400069-EX"])
     setEmpID(e.target.value);
-
-    setEmpJobTitle(employeeList[e.target.value][0]);
-    setEmpDOJ(employeeList[e.target.value][1]);
-    setEmpLocation(employeeList[e.target.value][2]);
+    setEmpName(employeeList[e.target.value][0]);
+    setEmpJobTitle(employeeList[e.target.value][2]);
+    setEmpDOJ(employeeList[e.target.value][3]);
+    setEmpLocation(employeeList[e.target.value][4]);
   }
 
   function handleSubmit(event) {
@@ -64,6 +65,7 @@ function App() {
     console.log(countriesRet);
     loadFile(
       "https://lionfish-app-zi2iv.ondigitalocean.app/doc/template.docx",
+      // "http://localhost:3000/doc/template.docx",
       function (error, content) {
         if (error) {
           throw error;
@@ -81,7 +83,7 @@ function App() {
           EL: countriesRet === "EL" ? "X" : "",
           PL: countriesRet === "PL" ? "X" : "",
           CL: countriesRet === "CL" ? "X" : "",
-          name: event.target.empName.value,
+          name: empName,
           emp_no: event.target.empID.value,
           job_title: event.target.empJobTitle.value,
           doj: event.target.empDOJ.value,
@@ -213,21 +215,21 @@ function App() {
                 type="text"
                 className="rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 md:col-span-2"
                 placeholder="Home Country Address"
-                required
+                
               />
               <input
                 name="empHomeNumber"
                 type="text"
                 className="col-span-1 rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 placeholder="Contact Number Home Country"
-                required
+                
               />
               <input
                 name="empLocalNumber"
                 type="text"
                 className="col-span-1 rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 placeholder="UAE Mobile Number +971 "
-                required
+                
               />
             </section>
 
