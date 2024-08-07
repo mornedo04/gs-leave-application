@@ -99,8 +99,8 @@ function App() {
     const countriesRet = event.target.countries.value;
     console.log(countriesRet);
     loadFile(
-      // "https://lionfish-app-zi2iv.ondigitalocean.app/doc/template.docx",
-      "http://localhost:3000/doc/template.docx",
+      `${process.env.PUBLIC_URL}/doc/template.docx`,
+      // "http://localhost:3000/doc/template.docx",
       function (error, content) {
         setIsDisabled(true);
 
