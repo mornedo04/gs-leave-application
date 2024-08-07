@@ -95,16 +95,15 @@ function App() {
   }
 
   function handleSubmit(event) {
-    
     event.preventDefault();
     const countriesRet = event.target.countries.value;
     console.log(countriesRet);
     loadFile(
-      "https://lionfish-app-zi2iv.ondigitalocean.app/doc/template.docx",
-      // "http://localhost:3000/doc/template.docx",
+      // "https://lionfish-app-zi2iv.ondigitalocean.app/doc/template.docx",
+      "http://localhost:3000/doc/template.docx",
       function (error, content) {
         setIsDisabled(true);
-        
+
         if (error) {
           throw error;
         }
@@ -153,11 +152,10 @@ function App() {
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         }); //Output the document using Data-URI
         saveAs(out, empID.concat(".docx"));
-        
+
         setIsDisabled(false);
         window.location.reload(true);
       }
-      
     );
     // this.props.history.push('/');
   }
@@ -167,7 +165,6 @@ function App() {
     console.log(Date.parse(event));
     setMinDate(Date.parse(event));
   }
-
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -285,6 +282,7 @@ function App() {
                     className="text-gray-200 md:order-1"
                     label="Leave Start Date"
                     name="leave_start_date"
+                    format="DD-MMM-YYYY"
                     slotProps={{
                       textField: {
                         required: true,
@@ -295,6 +293,7 @@ function App() {
                     className="text-gray-200 md:order-3"
                     label="Leave End Date"
                     name="leave_end_date"
+                    format="DD-MMM-YYYY"
                     slotProps={{
                       textField: {
                         required: true,
@@ -305,11 +304,13 @@ function App() {
                     className="text-gray-200 md:order-2"
                     label="Outgoing Travel Date"
                     name="outgoing_travel_date"
+                    format="DD-MMM-YYYY"
                   />
                   <DatePicker
                     className="text-gray-200 md:order-4"
                     label="Incoming Travel Date"
                     name="incoming_travel_date"
+                    format="DD-MMM-YYYY"
                   />
                   <div className="flex md:order-5">
                     <span className="inline-flex w-4/5 items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
@@ -384,13 +385,10 @@ function App() {
                     className="col-span-4 md:col-span-1"
                     value="Departure"
                   />
-                  <DatePicker name="ticket_departure_date" />
-                  {/* <Datepicker
-                minDate={minDate}
-                className="col-span-2 w-full bg-gray-700 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 md:col-span-1"
-                onChange={handleDateChange}
-                name="ticket_departure_date"
-              /> */}
+                  <DatePicker
+                    name="ticket_departure_date"
+                    format="DD-MMM-YYYY"
+                  />
                   <input
                     type="text"
                     name="departure_airline"
@@ -404,12 +402,7 @@ function App() {
                     placeholder=""
                   />
                   <Label className="col-span-4 md:col-span-1" value="Return" />
-                  <DatePicker name="ticket_arrival_date" />
-                  {/* <Datepicker
-                minDate={minDate}
-                className="col-span-2 w-full bg-gray-700 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 md:col-span-1"
-                name="ticket_arrival_date"
-              /> */}
+                  <DatePicker name="ticket_arrival_date" format="DD-MMM-YYYY" />
                   <input
                     type="text"
                     name="arrival_airline"
