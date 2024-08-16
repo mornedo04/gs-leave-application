@@ -1,7 +1,8 @@
 // import logo from "./logo.svg";
 import "./App.css";
 import { useState, useEffect } from "react";
-import { Radio, Flowbite, Label, Card } from "flowbite-react";
+import { Radio, Flowbite, Label } from "flowbite-react";
+import Moment from 'moment';
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -24,30 +25,10 @@ function App() {
   const [empJobTitle, setEmpJobTitle] = useState("");
   const [empDOJ, setEmpDOJ] = useState("");
   const [empLocation, setEmpLocation] = useState("");
-  const [minDate, setMinDate] = useState(new Date());
   const [isDisabled, setIsDisabled] = useState(false);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
 
-  const newTheme = (theme) =>
-    createTheme({
-      ...theme,
-      components: {
-        MuiTextField: {
-          styleOverrides: {
-            root: {
-              color: "white",
-              borderRadius: "8px",
-              borderWidth: "0px",
-              padding: "0px",
-              borderColor: "#2196f3",
-              border: "0px solid",
-              backgroundColor: "rgb(55 65 81 / var(--tw-bg-opacity))",
-              size: "small",
-              fontSize: ".5rem",
-            },
-          },
-        },
-      },
-    });
 
   const darkTheme = createTheme({
     palette: {
@@ -94,10 +75,22 @@ function App() {
     setEmpLocation(employeeList[e.target.value][3]);
   }
 
+ function workDayCalculator (sDate, eDate) {
+  let weekdayCounter = 0;
+  while (sDate <= eDate) {
+    if (sDate.format('ddd') !== 'Sat' && sDate.format('ddd') !== 'Sun'){
+      weekdayCounter++; //add 1 to your counter if its not a weekend day
+    }
+    sDate = Moment(sDate, 'YYYY-MM-DD').add(1, 'days'); //increment by one day
+   }
+   return weekdayCounter;
+ }
+
   function handleSubmit(event) {
     event.preventDefault();
     const countriesRet = event.target.countries.value;
-    console.log(countriesRet);
+    console.log(Moment.duration(Moment(Date.parse(event.target.leave_end_date.value)).diff(Moment(Date.parse(event.target.leave_start_date.value)))).days());
+    console.log(workDayCalculator(Moment(Date.parse(event.target.leave_start_date.value)), Moment(Date.parse(event.target.leave_end_date.value))));
     loadFile(
       `${process.env.PUBLIC_URL}/doc/template.docx`,
       // "http://localhost:3000/doc/template.docx",
@@ -154,16 +147,13 @@ function App() {
         saveAs(out, empID.concat(".docx"));
 
         setIsDisabled(false);
-        window.location.reload(true);
+        // window.location.reload(true);
       }
     );
     // this.props.history.push('/');
   }
 
   function handleDateChange(event) {
-    console.log("Hello");
-    console.log(Date.parse(event));
-    setMinDate(Date.parse(event));
   }
 
   return (
