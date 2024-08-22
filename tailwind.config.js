@@ -11,7 +11,13 @@ module.exports = {
     flowbite.content(),
   ],
   theme: {
-    extend: {},
+    extend: {
+      transitionDuration: {
+      '10000': '10000ms',
+    }},
+    transitionProperty: {
+      'height': 'height',
+    },
   },
   plugins: [
     flowbite.plugin()

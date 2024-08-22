@@ -2,7 +2,7 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { Radio, Flowbite, Label } from "flowbite-react";
-import Moment from "moment";
+// import Moment from "moment";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -19,7 +19,9 @@ import gsLogo from "./images/gs-inima-Transparent.png";
 
 function App() {
   const [options, setOptions] = useState([]);
+  const [hideData, setHideData] = useState(true);
   const [employeeList, setEmployeeList] = useState({});
+  const [leaveTpe, setLeaveType] = useState();
   const [empID, setEmpID] = useState("");
   const [empName, setEmpName] = useState("");
   const [empJobTitle, setEmpJobTitle] = useState("");
@@ -28,6 +30,9 @@ function App() {
   const [isDisabled, setIsDisabled] = useState(false);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
+  const [tLDeW, setTLDeW] = useState("");
+  const [tLDiW, setTLDiW] = useState("");
+
 
   const darkTheme = createTheme({
     palette: {
@@ -65,8 +70,9 @@ function App() {
     PizZipUtils.getBinaryContent(url, callback);
   }
 
-  function handleChange(e) {
+  const handleChange = async (e) => {
     // console.log(employeeList["S400069-EX"])
+    if (leaveTpe) setHideData(false);
     setEmpID(e.target.value);
     setEmpName(employeeList[e.target.value][0]);
     setEmpJobTitle(employeeList[e.target.value][1]);
@@ -74,34 +80,35 @@ function App() {
     setEmpLocation(employeeList[e.target.value][3]);
   }
 
-  function workDayCalculator(sDate, eDate) {
+  const handleLeaveType = async (e) => {
+    setLeaveType(e.target.value);
+    if (empID) setHideData(false);
+  }
+
+  const workDayCalculator = async (sDate, eDate) => {
     let weekdayCounter = 1;
-    console.log(sDate.format("ddd"))
+    let totalCounter = 1;
+    console.log(empLocation.includes("Shuweihat"))
     while (sDate < eDate) {
-      if (sDate.format("ddd") !== "Sat" && sDate.format("ddd") !== "Sun") {
-        weekdayCounter++; //add 1 to your counter if its not a weekend day
+      if (empLocation.includes("Shuweihat")){   
+        if (sDate.format("ddd") !== "Sun") {
+          weekdayCounter++; //add 1 to your counter if its not a weekend day
+        }
+      } else {
+        if (sDate.format("ddd") !== "Sat" && sDate.format("ddd") !== "Sun") {
+          weekdayCounter++; //add 1 to your counter if its not a weekend day
+        }
       }
+      totalCounter++;
       sDate = sDate.add(1, "days"); //increment by one day
     }
-    return weekdayCounter;
+
+    return [weekdayCounter, totalCounter];
   }
 
   function handleSubmit(event) {
     event.preventDefault();
     const countriesRet = event.target.countries.value;
-    console.log(
-      Moment.duration(
-        Moment(Date.parse(event.target.leave_end_date.value)).diff(
-          Moment(Date.parse(event.target.leave_start_date.value))
-        )
-      ).days()
-    );
-    console.log(
-      workDayCalculator(
-        Moment(Date.parse(event.target.leave_start_date.value)),
-        Moment(Date.parse(event.target.leave_end_date.value))
-      )
-    );
     loadFile(
       `${process.env.PUBLIC_URL}/doc/template.docx`,
       // "http://localhost:3000/doc/template.docx",
@@ -167,7 +174,16 @@ function App() {
   function handleDateChange(newValue) {
     setEndDate(newValue);
     if (startDate) {
-      console.log(workDayCalculator(startDate, newValue));
+      workDayCalculator(startDate, newValue).then(value => {
+        console.log('e and v: %d %d', value[0], value[1])
+        
+        setTLDeW(value[0]);
+        setTLDiW(value[1]);
+      })
+      
+      // console.log('test: %d, %d', tLDeW, tLDiW)
+      // console.log(workDayCalculator(startDate, newValue));
+      // console.log('test: %d, %d', tLDeW, tLDiW)
     } else {
       console.log(startDate);
     }
@@ -196,6 +212,7 @@ function App() {
                     <select
                       id="countries"
                       name="countries"
+                      onChange={handleLeaveType}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       required
                     >
@@ -255,6 +272,11 @@ function App() {
                   />
                 </section>
 
+                <div style={ hideData
+                    ? { maxHeight: "0rem", transition: "max-height 2s ease-out"}
+                    : { maxHeight: "100rem",  transition: "max-height 2s ease-out"}}
+                    className="overflow-hidden"
+                    >
                 {/* Contact Address on Leave */}
                 <section className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
                   <h2 className="text-lg font-bold text-gray-200 ">
@@ -308,6 +330,7 @@ function App() {
                     name="leave_end_date"
                     format="DD-MMM-YYYY"
                     value={endDate}
+                    minDate={startDate}
                     onChange={handleDateChange}
                     slotProps={{
                       textField: {
@@ -321,6 +344,8 @@ function App() {
                     label="Outgoing Travel Date"
                     name="outgoing_travel_date"
                     format="DD-MMM-YYYY"
+                    minDate={startDate}
+                    maxDate={endDate}
                     slotProps={{
                       textField: {
                         size: "small",
@@ -332,6 +357,8 @@ function App() {
                     label="Incoming Travel Date"
                     name="incoming_travel_date"
                     format="DD-MMM-YYYY"
+                    minDate={startDate}
+                    maxDate={endDate}
                     slotProps={{
                       textField: {
                         size: "small",
@@ -346,8 +373,9 @@ function App() {
                       />
                     </span>
                     <input
-                      type="number"
+                      type="text"
                       name="leaveDays"
+                      value={tLDeW}
                       id="website-admin"
                       className="block w-full min-w-0 flex-1 rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                       placeholder="Days"
@@ -363,8 +391,9 @@ function App() {
                       />
                     </span>
                     <input
-                      type="number"
+                      type="text"
                       name="totalDays"
+                      value={tLDiW}
                       id="website-admin"
                       className="block w-full min-w-0 flex-1 rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                       placeholder="Days"
@@ -412,8 +441,11 @@ function App() {
                     value="Departure"
                   />
                   <DatePicker
+                    className="col-span-2 md:col-span-1"
                     name="ticket_departure_date"
                     format="DD-MMM-YYYY"
+                    minDate={startDate}
+                    maxDate={endDate}
                     slotProps={{
                       textField: {
                         size: "small",
@@ -434,8 +466,11 @@ function App() {
                   />
                   <Label className="col-span-4 md:col-span-1" value="Return" />
                   <DatePicker
+                    className="col-span-2 md:col-span-1"
                     name="ticket_arrival_date"
                     format="DD-MMM-YYYY"
+                    minDate={startDate}
+                    maxDate={endDate}
                     slotProps={{
                       textField: {
                         size: "small",
@@ -463,6 +498,7 @@ function App() {
                 >
                   {isDisabled ? "Please Wait..." : "Submit"}
                 </button>
+                </div>
               </form>
             </div>
           </main>
