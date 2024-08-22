@@ -1,13 +1,8 @@
 // import logo from "./logo.svg";
 import "./App.css";
 import { useState, useEffect } from "react";
-import { Radio, Flowbite, Label } from "flowbite-react";
+import { Flowbite } from "flowbite-react";
 // import Moment from "moment";
-
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { DatePicker } from "@mui/x-date-pickers";
 
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
@@ -16,6 +11,8 @@ import { saveAs } from "file-saver";
 import expressionParser from "docxtemplater/expressions";
 
 import gsLogo from "./images/gs-inima-Transparent.png";
+
+import LeaveData from "./components/LeaveData";
 
 function App() {
   const [options, setOptions] = useState([]);
@@ -27,18 +24,11 @@ function App() {
   const [empJobTitle, setEmpJobTitle] = useState("");
   const [empDOJ, setEmpDOJ] = useState("");
   const [empLocation, setEmpLocation] = useState("");
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
-  const [tLDeW, setTLDeW] = useState("");
-  const [tLDiW, setTLDiW] = useState("");
+  const [seed, setSeed] = useState(1);
+  const reset = () => {
+       setSeed(Math.random());
+   }
 
-
-  const darkTheme = createTheme({
-    palette: {
-      mode: "dark",
-    },
-  });
 
   useEffect(() => {
     fetch(
@@ -72,6 +62,7 @@ function App() {
 
   const handleChange = async (e) => {
     // console.log(employeeList["S400069-EX"])
+    reset();
     if (leaveTpe) setHideData(false);
     setEmpID(e.target.value);
     setEmpName(employeeList[e.target.value][0]);
@@ -82,28 +73,8 @@ function App() {
 
   const handleLeaveType = async (e) => {
     setLeaveType(e.target.value);
+    reset();
     if (empID) setHideData(false);
-  }
-
-  const workDayCalculator = async (sDate, eDate) => {
-    let weekdayCounter = 1;
-    let totalCounter = 1;
-    console.log(empLocation.includes("Shuweihat"))
-    while (sDate < eDate) {
-      if (empLocation.includes("Shuweihat")){   
-        if (sDate.format("ddd") !== "Sun") {
-          weekdayCounter++; //add 1 to your counter if its not a weekend day
-        }
-      } else {
-        if (sDate.format("ddd") !== "Sat" && sDate.format("ddd") !== "Sun") {
-          weekdayCounter++; //add 1 to your counter if its not a weekend day
-        }
-      }
-      totalCounter++;
-      sDate = sDate.add(1, "days"); //increment by one day
-    }
-
-    return [weekdayCounter, totalCounter];
   }
 
   function handleSubmit(event) {
@@ -113,7 +84,6 @@ function App() {
       `${process.env.PUBLIC_URL}/doc/template.docx`,
       // "http://localhost:3000/doc/template.docx",
       function (error, content) {
-        setIsDisabled(true);
 
         if (error) {
           throw error;
@@ -164,34 +134,13 @@ function App() {
         }); //Output the document using Data-URI
         saveAs(out, empID.concat(".docx"));
 
-        setIsDisabled(false);
         // window.location.reload(true);
       }
     );
     // this.props.history.push('/');
   }
 
-  function handleDateChange(newValue) {
-    setEndDate(newValue);
-    if (startDate) {
-      workDayCalculator(startDate, newValue).then(value => {
-        console.log('e and v: %d %d', value[0], value[1])
-        
-        setTLDeW(value[0]);
-        setTLDiW(value[1]);
-      })
-      
-      // console.log('test: %d, %d', tLDeW, tLDiW)
-      // console.log(workDayCalculator(startDate, newValue));
-      // console.log('test: %d, %d', tLDeW, tLDiW)
-    } else {
-      console.log(startDate);
-    }
-  }
-
   return (
-    <ThemeProvider theme={darkTheme}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Flowbite theme={{ mode: "dark" }}>
           <main className="flex flex-col min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
             <img src={gsLogo} className="h-20" alt="GS Inima LOGO" />
@@ -271,240 +220,18 @@ function App() {
                     placeholder="Visa Expiration"
                   />
                 </section>
-
                 <div style={ hideData
                     ? { maxHeight: "0rem", transition: "max-height 2s ease-out"}
                     : { maxHeight: "100rem",  transition: "max-height 2s ease-out"}}
                     className="overflow-hidden"
                     >
-                {/* Contact Address on Leave */}
-                <section className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <h2 className="text-lg font-bold text-gray-200 ">
-                    B. Contact Address on Leave
-                  </h2>
-                  <input
-                    name="empHomeAddress"
-                    type="text"
-                    className="rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 md:col-span-2"
-                    placeholder="Home Country Address"
-                  />
-                  <input
-                    name="empHomeNumber"
-                    type="text"
-                    className="col-span-1 rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="Contact Number Home Country"
-                  />
-                  <input
-                    name="empLocalNumber"
-                    type="text"
-                    className="col-span-1 rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="UAE Mobile Number +971 "
-                  />
-                </section>
-
-                {/* Request Leave Date */}
-                <section className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <h2 className="text-lg font-bold text-gray-200 md:col-span-2">
-                    C. Request Leave
-                  </h2>
-                  <DatePicker
-                    className="text-gray-200 md:order-1"
-                    label="Leave Start Date"
-                    name="leave_start_date"
-                    format="DD-MMM-YYYY"
-                    value={startDate}
-                    onChange={(newVal) => {
-                      console.log(newVal);
-                      setStartDate(newVal);
-                    }}
-                    slotProps={{
-                      textField: {
-                        required: true,
-                        size: "small",
-                      },
-                    }}
-                  />
-                  <DatePicker
-                    className="text-gray-200 md:order-3"
-                    label="Leave End Date"
-                    name="leave_end_date"
-                    format="DD-MMM-YYYY"
-                    value={endDate}
-                    minDate={startDate}
-                    onChange={handleDateChange}
-                    slotProps={{
-                      textField: {
-                        required: true,
-                        size: "small",
-                      },
-                    }}
-                  />
-                  <DatePicker
-                    className="text-gray-200 md:order-2"
-                    label="Outgoing Travel Date"
-                    name="outgoing_travel_date"
-                    format="DD-MMM-YYYY"
-                    minDate={startDate}
-                    maxDate={endDate}
-                    slotProps={{
-                      textField: {
-                        size: "small",
-                      },
-                    }}
-                  />
-                  <DatePicker
-                    className="text-gray-200 md:order-4"
-                    label="Incoming Travel Date"
-                    name="incoming_travel_date"
-                    format="DD-MMM-YYYY"
-                    minDate={startDate}
-                    maxDate={endDate}
-                    slotProps={{
-                      textField: {
-                        size: "small",
-                      },
-                    }}
-                  />
-                  <div className="flex md:order-5">
-                    <span className="inline-flex w-4/5 items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
-                      <Label
-                        htmlFor="daycount1"
-                        value="Total No. of Leave Days Excluding weekends / holidays"
-                      />
-                    </span>
-                    <input
-                      type="text"
-                      name="leaveDays"
-                      value={tLDeW}
-                      id="website-admin"
-                      className="block w-full min-w-0 flex-1 rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      placeholder="Days"
-                      required
-                    />
-                  </div>
-
-                  <div className="flex md:order-6">
-                    <span className="inline-flex w-4/5 items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
-                      <Label
-                        htmlFor="daycount2"
-                        value="Total No. of Leave Days Including weekends / holidays"
-                      />
-                    </span>
-                    <input
-                      type="text"
-                      name="totalDays"
-                      value={tLDiW}
-                      id="website-admin"
-                      className="block w-full min-w-0 flex-1 rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      placeholder="Days"
-                      required
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-5 md:col-span-2 md:order-7">
-                    <span className="inline-flex items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
-                      <Label htmlFor="remarks" value="Remark / Comments" />
-                    </span>
-                    <input
-                      type="text"
-                      name="remarks"
-                      id="website-admin"
-                      className="block col-span-1 md:col-span-4 w-full min-w-0 flex-1 rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      placeholder=""
-                    />
-                  </div>
-                </section>
-
-                <section className="mt-6 grid grid-cols-4 gap-4  md:order-7">
-                  <h2 className="col-span-4 text-lg font-bold text-gray-200">
-                    D. Flight Booking
-                  </h2>
-                  <Label
-                    className="col-span-2"
-                    value="BOOKING TO BE MADE BY:"
-                  />
-                  <div className="flex items-center gap-2">
-                    <Radio name="flight_booking" value="COMPANY" />
-                    <Label htmlFor="flightCompany" value="COMPANY" />
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <Radio name="flight_booking" value="OWN" />
-                    <Label htmlFor="flightOwn" value="OWN" />
-                  </div>
-
-                  <div></div>
-                  <Label className="" value="Date" />
-                  <Label className="" value="Airline" />
-                  <Label className="" value="Sector" />
-                  <Label
-                    className="col-span-4 md:col-span-1"
-                    value="Departure"
-                  />
-                  <DatePicker
-                    className="col-span-2 md:col-span-1"
-                    name="ticket_departure_date"
-                    format="DD-MMM-YYYY"
-                    minDate={startDate}
-                    maxDate={endDate}
-                    slotProps={{
-                      textField: {
-                        size: "small",
-                      },
-                    }}
-                  />
-                  <input
-                    type="text"
-                    name="departure_airline"
-                    className="col-span-1 rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder=""
-                  />
-                  <input
-                    type="text"
-                    name="departure_sector"
-                    className="col-span-1 rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder=""
-                  />
-                  <Label className="col-span-4 md:col-span-1" value="Return" />
-                  <DatePicker
-                    className="col-span-2 md:col-span-1"
-                    name="ticket_arrival_date"
-                    format="DD-MMM-YYYY"
-                    minDate={startDate}
-                    maxDate={endDate}
-                    slotProps={{
-                      textField: {
-                        size: "small",
-                      },
-                    }}
-                  />
-                  <input
-                    type="text"
-                    name="arrival_airline"
-                    className="col-span-1 rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder=""
-                  />
-                  <input
-                    type="text"
-                    name="arrival_sector"
-                    className="col-span-1 rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder=""
-                  />
-                </section>
-
-                <button
-                  type="submit"
-                  className="col-span-2 mt-4 rounded-md bg-gradient-to-r from-indigo-500 to-blue-500 px-4 py-2 font-bold text-white transition duration-150 ease-in-out hover:bg-indigo-600 hover:to-blue-600"
-                  disabled={isDisabled}
-                >
-                  {isDisabled ? "Please Wait..." : "Submit"}
-                </button>
+                <LeaveData key={seed} />
                 </div>
+                
               </form>
             </div>
           </main>
         </Flowbite>
-      </LocalizationProvider>
-    </ThemeProvider>
   );
 }
 
