@@ -2,12 +2,12 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { Radio, Flowbite, Label } from "flowbite-react";
-import Moment from 'moment';
+import Moment from "moment";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { DatePicker } from "@mui/x-date-pickers";
 
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
@@ -28,7 +28,6 @@ function App() {
   const [isDisabled, setIsDisabled] = useState(false);
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
-
 
   const darkTheme = createTheme({
     palette: {
@@ -75,22 +74,34 @@ function App() {
     setEmpLocation(employeeList[e.target.value][3]);
   }
 
- function workDayCalculator (sDate, eDate) {
-  let weekdayCounter = 0;
-  while (sDate <= eDate) {
-    if (sDate.format('ddd') !== 'Sat' && sDate.format('ddd') !== 'Sun'){
-      weekdayCounter++; //add 1 to your counter if its not a weekend day
+  function workDayCalculator(sDate, eDate) {
+    let weekdayCounter = 1;
+    console.log(sDate.format("ddd"))
+    while (sDate < eDate) {
+      if (sDate.format("ddd") !== "Sat" && sDate.format("ddd") !== "Sun") {
+        weekdayCounter++; //add 1 to your counter if its not a weekend day
+      }
+      sDate = sDate.add(1, "days"); //increment by one day
     }
-    sDate = Moment(sDate, 'YYYY-MM-DD').add(1, 'days'); //increment by one day
-   }
-   return weekdayCounter;
- }
+    return weekdayCounter;
+  }
 
   function handleSubmit(event) {
     event.preventDefault();
     const countriesRet = event.target.countries.value;
-    console.log(Moment.duration(Moment(Date.parse(event.target.leave_end_date.value)).diff(Moment(Date.parse(event.target.leave_start_date.value)))).days());
-    console.log(workDayCalculator(Moment(Date.parse(event.target.leave_start_date.value)), Moment(Date.parse(event.target.leave_end_date.value))));
+    console.log(
+      Moment.duration(
+        Moment(Date.parse(event.target.leave_end_date.value)).diff(
+          Moment(Date.parse(event.target.leave_start_date.value))
+        )
+      ).days()
+    );
+    console.log(
+      workDayCalculator(
+        Moment(Date.parse(event.target.leave_start_date.value)),
+        Moment(Date.parse(event.target.leave_end_date.value))
+      )
+    );
     loadFile(
       `${process.env.PUBLIC_URL}/doc/template.docx`,
       // "http://localhost:3000/doc/template.docx",
@@ -153,7 +164,13 @@ function App() {
     // this.props.history.push('/');
   }
 
-  function handleDateChange(event) {
+  function handleDateChange(newValue) {
+    setEndDate(newValue);
+    if (startDate) {
+      console.log(workDayCalculator(startDate, newValue));
+    } else {
+      console.log(startDate);
+    }
   }
 
   return (
@@ -273,9 +290,15 @@ function App() {
                     label="Leave Start Date"
                     name="leave_start_date"
                     format="DD-MMM-YYYY"
+                    value={startDate}
+                    onChange={(newVal) => {
+                      console.log(newVal);
+                      setStartDate(newVal);
+                    }}
                     slotProps={{
                       textField: {
                         required: true,
+                        size: "small",
                       },
                     }}
                   />
@@ -284,9 +307,12 @@ function App() {
                     label="Leave End Date"
                     name="leave_end_date"
                     format="DD-MMM-YYYY"
+                    value={endDate}
+                    onChange={handleDateChange}
                     slotProps={{
                       textField: {
                         required: true,
+                        size: "small",
                       },
                     }}
                   />
@@ -295,12 +321,22 @@ function App() {
                     label="Outgoing Travel Date"
                     name="outgoing_travel_date"
                     format="DD-MMM-YYYY"
+                    slotProps={{
+                      textField: {
+                        size: "small",
+                      },
+                    }}
                   />
                   <DatePicker
                     className="text-gray-200 md:order-4"
                     label="Incoming Travel Date"
                     name="incoming_travel_date"
                     format="DD-MMM-YYYY"
+                    slotProps={{
+                      textField: {
+                        size: "small",
+                      },
+                    }}
                   />
                   <div className="flex md:order-5">
                     <span className="inline-flex w-4/5 items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
@@ -378,6 +414,11 @@ function App() {
                   <DatePicker
                     name="ticket_departure_date"
                     format="DD-MMM-YYYY"
+                    slotProps={{
+                      textField: {
+                        size: "small",
+                      },
+                    }}
                   />
                   <input
                     type="text"
@@ -392,7 +433,15 @@ function App() {
                     placeholder=""
                   />
                   <Label className="col-span-4 md:col-span-1" value="Return" />
-                  <DatePicker name="ticket_arrival_date" format="DD-MMM-YYYY" />
+                  <DatePicker
+                    name="ticket_arrival_date"
+                    format="DD-MMM-YYYY"
+                    slotProps={{
+                      textField: {
+                        size: "small",
+                      },
+                    }}
+                  />
                   <input
                     type="text"
                     name="arrival_airline"
