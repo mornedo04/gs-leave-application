@@ -15,6 +15,7 @@ import gsLogo from "./images/gs-inima-Transparent.png";
 import LeaveData from "./components/LeaveData";
 
 function App() {
+  const [isDisabled, setIsDisabled] = useState(false);
   const [options, setOptions] = useState([]);
   const [hideData, setHideData] = useState(true);
   const [employeeList, setEmployeeList] = useState({});
@@ -84,6 +85,8 @@ function App() {
       `${process.env.PUBLIC_URL}/doc/template.docx`,
       // "http://localhost:3000/doc/template.docx",
       function (error, content) {
+        
+        setIsDisabled(true);
 
         if (error) {
           throw error;
@@ -225,7 +228,7 @@ function App() {
                     : { maxHeight: "100rem",  transition: "max-height 2s ease-out"}}
                     className="overflow-hidden"
                     >
-                <LeaveData key={seed} />
+                <LeaveData key={seed} isDisabled={isDisabled} />
                 </div>
                 
               </form>

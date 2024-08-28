@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 
 import { Radio, Flowbite, Label } from "flowbite-react";
 
-export default function LeaveData() {
-  const [isDisabled, setIsDisabled] = useState(false);
+export default function LeaveData(props) {
+  
   const [startDate, setStartDate] = useState();
   const [endDate, setEndDate] = useState();
   const [tLDeW, setTLDeW] = useState("");
@@ -286,9 +286,9 @@ export default function LeaveData() {
         <button
           type="submit"
           className="col-span-2 mt-4 rounded-md bg-gradient-to-r from-indigo-500 to-blue-500 px-4 py-2 font-bold text-white transition duration-150 ease-in-out hover:bg-indigo-600 hover:to-blue-600"
-          disabled={isDisabled}
+          disabled={props.isDisabled}
         >
-          {isDisabled ? "Please Wait..." : "Submit"}
+          {props.isDisabled ? "Done!" : "Submit"}
         </button>
       </LocalizationProvider>
     </ThemeProvider>
