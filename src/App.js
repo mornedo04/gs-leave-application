@@ -15,6 +15,8 @@ import gsLogo from "./images/gs-inima-Transparent.png";
 import LeaveData from "./components/LeaveData";
 
 function App() {
+  // const containerRef = useRef(null);
+
   const [isDisabled, setIsDisabled] = useState(false);
   const [options, setOptions] = useState([]);
   const [hideData, setHideData] = useState(true);
@@ -25,7 +27,9 @@ function App() {
   const [empJobTitle, setEmpJobTitle] = useState("");
   const [empDOJ, setEmpDOJ] = useState("");
   const [empLocation, setEmpLocation] = useState("");
+  const [empUAENum, setEmpUAENum] = useState("");
   const [seed, setSeed] = useState(1);
+  const [docBlob, setDocBlob] = useState(null);
   const reset = () => {
        setSeed(Math.random());
    }
@@ -48,7 +52,7 @@ function App() {
               key: value[1],
               value: value[0],
             });
-            dicResult[value[0]] = [value[1], value[3], value[2], value[9]];
+            dicResult[value[0]] = [value[1], value[3], value[2], value[10], value[8]];
           }
         });
         setOptions([{ key: "Employee Name", value: "" }, ...results]);
@@ -70,6 +74,7 @@ function App() {
     setEmpJobTitle(employeeList[e.target.value][1]);
     setEmpDOJ(employeeList[e.target.value][2]);
     setEmpLocation(employeeList[e.target.value][3]);
+    setEmpUAENum(employeeList[e.target.value][4]);
   }
 
   const handleLeaveType = async (e) => {
@@ -135,6 +140,8 @@ function App() {
           mimeType:
             "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         }); //Output the document using Data-URI
+
+        setDocBlob(URL.createObjectURL(out));
         saveAs(out, empID.concat(".docx"));
 
         // window.location.reload(true);
@@ -228,7 +235,7 @@ function App() {
                     : { maxHeight: "100rem",  transition: "max-height 2s ease-out"}}
                     className="overflow-hidden"
                     >
-                <LeaveData key={seed} isDisabled={isDisabled} />
+                <LeaveData key={seed} isDisabled={isDisabled} empUAENum={empUAENum} />
                 </div>
                 
               </form>

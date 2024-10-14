@@ -98,6 +98,7 @@ export default function LeaveData(props) {
           <input
             name="empLocalNumber"
             type="text"
+            value={props.empUAENum}
             className="col-span-1 rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
             placeholder="UAE Mobile Number +971 "
           />
@@ -200,7 +201,7 @@ export default function LeaveData(props) {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-5 md:col-span-2 md:order-7">
             <span className="inline-flex items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
-              <Label htmlFor="remarks" value="Remark / Comments" />
+              <Label htmlFor="remarks" value="Reason for Leave" />
             </span>
             <input
               type="text"
