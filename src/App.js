@@ -9,6 +9,7 @@ import PizZip from "pizzip";
 import PizZipUtils from "pizzip/utils/index.js";
 import { saveAs } from "file-saver";
 import expressionParser from "docxtemplater/expressions";
+import LeaveForm from './LeaveFormPage';
 
 import gsLogo from "./images/gs-inima-Transparent.png";
 
@@ -30,6 +31,9 @@ function App() {
   const [empUAENum, setEmpUAENum] = useState("");
   const [seed, setSeed] = useState(1);
   const [docBlob, setDocBlob] = useState(null);
+  const [subProps, setSubProps] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
   const reset = () => {
        setSeed(Math.random());
    }
@@ -84,164 +88,193 @@ function App() {
   }
 
   function handleSubmit(event) {
-    event.preventDefault();
+    
     const countriesRet = event.target.countries.value;
-    loadFile(
-      `${process.env.PUBLIC_URL}/doc/template.docx`,
-      // "http://localhost:3000/doc/template.docx",
-      function (error, content) {
+    setSubProps({
+            leaveType: countriesRet,
+            name: empName,
+            emp_no: event.target.empID.value,
+            job_title: event.target.empJobTitle.value,
+            doj: event.target.empDOJ.value,
+            location: event.target.empLocation.value,
+            expiration: "",
+            address: event.target.empHomeAddress.value,
+            uae_contact: event.target.empLocalNumber.value,
+            home_contact: event.target.empHomeNumber.value,
+            start_date: event.target.leave_start_date.value,
+            end_date: event.target.leave_end_date.value,
+            outgoing_date: event.target.outgoing_travel_date.value,
+            incoming_date: event.target.incoming_travel_date.value,
+            ex_day: event.target.leaveDays.value,
+            in_day: event.target.totalDays.value,
+            remarks: event.target.remarks.value,
+            ticketBooking: event.target.flight_booking.value,
+            dep_date: event.target.ticket_departure_date.value,
+            dep_airline: event.target.departure_airline.value,
+            dep_sector: event.target.departure_sector.value,
+            ret_date: event.target.ticket_arrival_date.value,
+            ret_airline: event.target.arrival_airline.value,
+            ret_sector: event.target.arrival_sector.value,});
+    setIsSubmitted(true);
+    
+    // event.preventDefault();
+    // loadFile(
+    //   `${process.env.PUBLIC_URL}/doc/template.docx`,
+    //   // "http://localhost:3000/doc/template.docx",
+    //   function (error, content) {
         
-        setIsDisabled(true);
+    //     setIsDisabled(true);
 
-        if (error) {
-          throw error;
-        }
-        const zip = new PizZip(content);
-        const doc = new Docxtemplater(zip, {
-          paragraphLoop: true,
-          linebreaks: true,
-          parser: expressionParser,
-        });
-        doc.render({
-          AL: countriesRet === "AL" ? "X" : "",
-          SL: countriesRet === "SL" ? "X" : "",
-          RL: countriesRet === "RL" ? "X" : "",
-          EL: countriesRet === "EL" ? "X" : "",
-          PL: countriesRet === "PL" ? "X" : "",
-          CL: countriesRet === "CL" ? "X" : "",
-          name: empName,
-          emp_no: event.target.empID.value,
-          job_title: event.target.empJobTitle.value,
-          doj: event.target.empDOJ.value,
-          location: event.target.empLocation.value,
-          expiration: "",
-          address: event.target.empHomeAddress.value,
-          uae_contact: event.target.empLocalNumber.value,
-          home_contact: event.target.empHomeNumber.value,
-          start_date: event.target.leave_start_date.value,
-          end_date: event.target.leave_end_date.value,
-          outgoing_date: event.target.outgoing_travel_date.value,
-          incoming_date: event.target.incoming_travel_date.value,
-          ex_day: event.target.leaveDays.value,
-          in_day: event.target.totalDays.value,
-          remarks: event.target.remarks.value,
-          a: event.target.flight_booking.value === "COMPANY" ? "X" : "",
-          b: event.target.flight_booking.value === "OWN" ? "X" : "",
-          dep_date: event.target.ticket_departure_date.value,
-          dep_airline: event.target.departure_airline.value,
-          dep_sector: event.target.departure_sector.value,
-          ret_date: event.target.ticket_arrival_date.value,
-          ret_airline: event.target.arrival_airline.value,
-          ret_sector: event.target.arrival_sector.value,
-        });
+    //     if (error) {
+    //       throw error;
+    //     }
+    //     const zip = new PizZip(content);
+    //     const doc = new Docxtemplater(zip, {
+    //       paragraphLoop: true,
+    //       linebreaks: true,
+    //       parser: expressionParser,
+    //     });
+    //     doc.render({
+    //       AL: countriesRet === "AL" ? "X" : "",
+    //       SL: countriesRet === "SL" ? "X" : "",
+    //       RL: countriesRet === "RL" ? "X" : "",
+    //       EL: countriesRet === "EL" ? "X" : "",
+    //       PL: countriesRet === "PL" ? "X" : "",
+    //       CL: countriesRet === "CL" ? "X" : "",
+    //       name: empName,
+    //       emp_no: event.target.empID.value,
+    //       job_title: event.target.empJobTitle.value,
+    //       doj: event.target.empDOJ.value,
+    //       location: event.target.empLocation.value,
+    //       expiration: "",
+    //       address: event.target.empHomeAddress.value,
+    //       uae_contact: event.target.empLocalNumber.value,
+    //       home_contact: event.target.empHomeNumber.value,
+    //       start_date: event.target.leave_start_date.value,
+    //       end_date: event.target.leave_end_date.value,
+    //       outgoing_date: event.target.outgoing_travel_date.value,
+    //       incoming_date: event.target.incoming_travel_date.value,
+    //       ex_day: event.target.leaveDays.value,
+    //       in_day: event.target.totalDays.value,
+    //       remarks: event.target.remarks.value,
+    //       a: event.target.flight_booking.value === "COMPANY" ? "X" : "",
+    //       b: event.target.flight_booking.value === "OWN" ? "X" : "",
+    //       dep_date: event.target.ticket_departure_date.value,
+    //       dep_airline: event.target.departure_airline.value,
+    //       dep_sector: event.target.departure_sector.value,
+    //       ret_date: event.target.ticket_arrival_date.value,
+    //       ret_airline: event.target.arrival_airline.value,
+    //       ret_sector: event.target.arrival_sector.value,
+    //     });
 
-        const out = doc.getZip().generate({
-          type: "blob",
-          mimeType:
-            "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        }); //Output the document using Data-URI
+    //     const out = doc.getZip().generate({
+    //       type: "blob",
+    //       mimeType:
+    //         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    //     }); //Output the document using Data-URI
 
-        setDocBlob(URL.createObjectURL(out));
-        saveAs(out, empID.concat(".docx"));
+    //     setDocBlob(URL.createObjectURL(out));
+    //     saveAs(out, empID.concat(".docx"));
 
-        // window.location.reload(true);
-      }
-    );
-    // this.props.history.push('/');
+    //     // window.location.reload(true);
+    //   }
+    // );
+    // // this.props.history.push('/');
   }
 
   return (
-        <Flowbite theme={{ mode: "dark" }}>
-          <main className="flex flex-col min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
-            <img src={gsLogo} className="h-20" alt="GS Inima LOGO" />
-            <h2 className="text-center text-lg font-bold text-gray-200">
-              HR & Administration Department
+    <>{isSubmitted ? <LeaveForm {...subProps} /> : <Flowbite theme={{ mode: "dark" }}>
+    <main className="flex flex-col min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
+      <img src={gsLogo} className="h-20" alt="GS Inima LOGO" />
+      <h2 className="text-center text-lg font-bold text-gray-200">
+        HR & Administration Department
+      </h2>
+      <h2 className="text-center text-lg font-bold text-gray-200">
+        Leave Application Form
+      </h2>
+      <div className="w-full max-w-5xl rounded-lg bg-gray-800 p-6 shadow-md">
+        <form className="" onSubmit={handleSubmit} method="post">
+          {/* Leave Request Information */}
+          <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <h2 className="text-lg font-bold text-gray-200 md:col-span-2">
+              A. Leave Request Information
             </h2>
-            <h2 className="text-center text-lg font-bold text-gray-200">
-              Leave Application Form
-            </h2>
-            <div className="w-full max-w-5xl rounded-lg bg-gray-800 p-6 shadow-md">
-              <form className="" onSubmit={handleSubmit} method="post">
-                {/* Leave Request Information */}
-                <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <h2 className="text-lg font-bold text-gray-200 md:col-span-2">
-                    A. Leave Request Information
-                  </h2>
-                  <div className="md:col-span-2">
-                    <select
-                      id="countries"
-                      name="countries"
-                      onChange={handleLeaveType}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      required
-                    >
-                      <option value="">Leave Type</option>
-                      <option value="AL">Annual Leave</option>
-                      <option value="SL">Sick Leave</option>
-                      <option value="RL">Rotation Leave</option>
-                      <option value="EL">Emergency Leave</option>
-                      <option value="PL">Paternity Leave</option>
-                      <option value="CL">Compassionate Leave</option>
-                    </select>
-                  </div>
-
-                  <select
-                    onChange={handleChange}
-                    name="empName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required
-                  >
-                    {options.map((option) => {
-                      return <option value={option.value}>{option.key}</option>;
-                    })}
-                  </select>
-                  <input
-                    type="text"
-                    name="empID"
-                    value={empID}
-                    className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="Employee Number"
-                  />
-                  <input
-                    type="text"
-                    name="empJobTitle"
-                    value={empJobTitle}
-                    className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="Job Title"
-                  />
-                  <input
-                    type="text"
-                    name="empDOJ"
-                    value={empDOJ}
-                    className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="Date of Joining"
-                  />
-                  <input
-                    type="text"
-                    name="empLocation"
-                    value={empLocation}
-                    className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="Project / Location"
-                  />
-                  <input
-                    name="visaExpiration"
-                    type="text"
-                    className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="Visa Expiration"
-                  />
-                </section>
-                <div style={ hideData
-                    ? { maxHeight: "0rem", transition: "max-height 2s ease-out"}
-                    : { maxHeight: "100rem",  transition: "max-height 2s ease-out"}}
-                    className="overflow-hidden"
-                    >
-                <LeaveData key={seed} isDisabled={isDisabled} empUAENum={empUAENum} />
-                </div>
-                
-              </form>
+            <div className="md:col-span-2">
+              <select
+                id="countries"
+                name="countries"
+                onChange={handleLeaveType}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                required
+              >
+                <option value="">Leave Type</option>
+                <option value="AL">Annual Leave</option>
+                <option value="SL">Sick Leave</option>
+                <option value="RL">Rotation Leave</option>
+                <option value="EL">Emergency Leave</option>
+                <option value="PL">Paternity Leave</option>
+                <option value="CL">Compassionate Leave</option>
+              </select>
             </div>
-          </main>
-        </Flowbite>
+
+            <select
+              onChange={handleChange}
+              name="empName"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              required
+            >
+              {options.map((option) => {
+                return <option value={option.value}>{option.key}</option>;
+              })}
+            </select>
+            <input
+              type="text"
+              name="empID"
+              value={empID}
+              className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="Employee Number"
+            />
+            <input
+              type="text"
+              name="empJobTitle"
+              value={empJobTitle}
+              className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="Job Title"
+            />
+            <input
+              type="text"
+              name="empDOJ"
+              value={empDOJ}
+              className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="Date of Joining"
+            />
+            <input
+              type="text"
+              name="empLocation"
+              value={empLocation}
+              className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="Project / Location"
+            />
+            <input
+              name="visaExpiration"
+              type="text"
+              className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              placeholder="Visa Expiration"
+            />
+          </section>
+          <div style={ hideData
+              ? { maxHeight: "0rem", transition: "max-height 2s ease-out"}
+              : { maxHeight: "100rem",  transition: "max-height 2s ease-out"}}
+              className="overflow-hidden"
+              >
+          <LeaveData key={seed} isDisabled={isDisabled} empUAENum={empUAENum} />
+          </div>
+          
+        </form>
+      </div>
+    </main>
+  </Flowbite>}</>
+        
   );
 }
 

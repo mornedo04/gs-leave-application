@@ -1,13 +1,18 @@
 // import logo from "./logo.svg";
-import React, { Component, PropTypes } from "react";
+import React, { Component, useState } from "react";
+
 
 import gsLogo from "./images/gs-inima-Transparent.png";
 import LeaveTypeCheckBox from "./components/LeaveTypeCheckBox";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 
-export default class LeaveForm extends Component {
+export default class LeaveForm  extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {isDownloaded: false};
+  }
   
   printDocument() {
     const input = document.getElementById("divToPrint");
@@ -20,11 +25,31 @@ export default class LeaveForm extends Component {
     });
   }
 
+  componentDidMount() {
+    // call api or anything
+    if(!this.state.isDownloaded){
+      window.scrollTo(0,0);
+      const input = document.getElementById("divToPrint");
+      html2canvas(input).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, "JPEG", 0, 0, 210, 300);
+        // pdf.output('dataurlnewwindow');
+        pdf.save(this.props.leaveType + " " + this.props.emp_no + " " + this.props.name +".pdf");
+        this.state.isDownloaded = true;
+      });
+    }
+  }
+
   render() {
     return (
       <main className="">
-        <div className="mb5">
+        {/* <div className="mb5">
           <button onClick={this.printDocument}>Print</button>
+        </div> */}
+        <div className="text-center font-bold">
+        <p className="text-4xl ">The Leave Application Form has been downloaded. Kindly sign it and obtain the necessary signature from Management.</p>
+        <p className="text-5xl p-10">Thank you!</p>
         </div>
         <div
           id="divToPrint"
@@ -39,23 +64,23 @@ export default class LeaveForm extends Component {
             </p>
           </div>
 
-          <LeaveTypeCheckBox />
+          <LeaveTypeCheckBox leaveType={this.props.leaveType} />
 
           <div className=" grid grid-cols-7 gap-2 w-full !px-4">
-            <div>Neme:</div>
-            <div className="border-black border-2 col-span-3"></div>
+            <div>Name:</div>
+            <div className="border-black border-2 col-span-3 text-center">{this.props.name}</div>
             <div>Emp No:</div>
-            <div className="border-black border-2 col-span-2"></div>
+            <div className="border-black border-2 col-span-2 text-center">{this.props.emp_no}</div>
 
             <div>Job Title:</div>
-            <div className="border-black border-2 col-span-3"></div>
+            <div className="border-black border-2 col-span-3 text-center">{this.props.job_title}</div>
             <div>Date of Joining:</div>
-            <div className="border-black border-2 col-span-2"></div>
+            <div className="border-black border-2 col-span-2 text-center">{this.props.doj}</div>
 
             <div>Project/Location:</div>
-            <div className="border-black border-2 col-span-3"></div>
+            <div className="border-black border-2 col-span-3 text-center">{this.props.location}</div>
             <div>Visa Expiration:</div>
-            <div className="border-black border-2 col-span-2"></div>
+            <div className="border-black border-2 col-span-2 text-center">{this.props.expiration}</div>
           </div>
 
           <div className="w-full">
@@ -65,11 +90,11 @@ export default class LeaveForm extends Component {
           </div>
           <div className="grid grid-cols-4 gap-2 w-full !px-4">
             <div>Home Country Address:</div>
-            <div className="col-span-3 border-black border-2"></div>
+            <div className="col-span-3 border-black border-2 text-center">{this.props.address}</div>
             <div>Contact No. Home Country:</div>
-            <div className="border-black border-2"></div>
+            <div className="border-black border-2 text-center">{this.props.home_contact}</div>
             <div className="text-center">Contact No. UAE:</div>
-            <div className="border-black border-2"></div>
+            <div className="border-black border-2 text-center">{this.props.uae_contact}</div>
           </div>
 
           <div className="w-full">
@@ -92,13 +117,13 @@ export default class LeaveForm extends Component {
 
           <div className="grid grid-cols-4 gap-2 w-full !px-4">
             <div>Leave Start Date </div>
-            <div className="border-black border-2"></div>
+            <div className="border-black border-2 text-center">{this.props.start_date}</div>
             <div className="text-center">Outgoing Travel Date</div>
-            <div className="border-black border-2"></div>
+            <div className="border-black border-2 text-center">{this.props.outgoing_date}</div>
             <div>Leave End Date</div>
-            <div className="border-black border-2"></div>
+            <div className="border-black border-2 text-center">{this.props.end_date}</div>
             <div className="text-center">Incoming Travel Date</div>
-            <div className="border-black border-2"></div>
+            <div className="border-black border-2 text-center">{this.props.incoming_date}</div>
           </div>
 
           <div className="flex gap-2 w-full !px-14   text-center align-middle">
@@ -107,7 +132,7 @@ export default class LeaveForm extends Component {
                 Total No. Of Leave Days <br /> Excluding weekends / holidays
               </div>
               <div className="flex justify-center items-center border-black border-2">
-                DAYS
+              {this.props.ex_day}
               </div>
             </div>
             <div className="flex-grow grid grid-cols-4">
@@ -115,16 +140,16 @@ export default class LeaveForm extends Component {
                 Total No. of Leave Days <br /> Including weekends / holidays
               </div>
               <div className="flex justify-center items-center border-black border-2">
-                DAYS
+              {this.props.in_day}
               </div>
             </div>
           </div>
 
           <div className="flex w-full !px-4">
             <div className="w-52 flex justify-center border-black border-2 border-r-0">
-              Remraks
+              Reason for Leave
             </div>
-            <div className="flex-grow flex justify-center border-black border-2"></div>
+            <div className="flex-grow flex justify-center border-black border-2  text-center">{this.props.remarks}</div>
           </div>
 
           <div className="w-full">
@@ -138,11 +163,11 @@ export default class LeaveForm extends Component {
               <div className="flex">
                 <div className="flex-1">BOOKING TO BE MADE BY:</div>
                 <div className="flex-1 grid grid-cols-3 !px-20">
-                  <div className="border-black border-2"></div>
+                  <div className={"border-black border-2 " + (this.props.ticketBooking=="COMPANY" ? "bg-black" : "")}></div>
                   <div className="col-span-2">COMPANY</div>
                 </div>
                 <div className="flex-1 grid grid-cols-3  !px-20">
-                  <div className="border-black border-2"></div>
+                  <div className={"border-black border-2 " + (this.props.ticketBooking=="OWN" ? "bg-black" : "")}></div>
                   <div className="col-span-2">OWN</div>
                 </div>
               </div>
@@ -153,19 +178,19 @@ export default class LeaveForm extends Component {
                 <div className="col-span-2">Section</div>
 
                 <div>Departure</div>
-                <div className="border-black border-2 border-r-0"></div>
-                <div className="border-black border-2 border-r-0"></div>
-                <div className="col-span-2 border-black border-2"></div>
+                <div className="border-black border-2 border-r-0 text-center">{this.props.dep_date}</div>
+                <div className="border-black border-2 border-r-0 text-center">{this.props.dep_airline}</div>
+                <div className="col-span-2 border-black border-2 text-center">{this.props.dep_sector}</div>
 
                 <div>Arival</div>
-                <div className="border-black border-2 border-r-0 border-t-0"></div>
-                <div className="border-black border-2 border-r-0 border-t-0"></div>
-                <div className="col-span-2 border-black border-2 border-t-0"></div>
+                <div className="border-black border-2 border-r-0 border-t-0 text-center">{this.props.ret_date}</div>
+                <div className="border-black border-2 border-r-0 border-t-0 text-center">{this.props.ret_airline}</div>
+                <div className="col-span-2 border-black border-2 border-t-0 text-center">{this.props.ret_sector}</div>
               </div>
             </div>
           </div>
 
-          <div className="flex w-full text-right !px-4">
+          <div className="flex w-full text-right !px-4 !pt-6">
             <div className="flex-1">Signature of Employee:</div>
             <div className="flex-1 border-black border-b-2"></div>
             <div className="flex-1">Manager:</div>
@@ -215,7 +240,7 @@ export default class LeaveForm extends Component {
           </div>
 
           <div className="w-full">
-            <p className="font-bold">F.</p>
+            <p className="font-bold">G.</p>
           </div>
 
           <div className="!px-4 w-full text-center">

@@ -24,11 +24,11 @@ export default function LeaveData(props) {
     let totalCounter = 1;
     // console.log(empLocation.includes("Shuweihat"));
     while (sDate < eDate) {
-    //   if (empLocation.includes("Shuweihat")) {
-    //     if (sDate.format("ddd") !== "Sun") {
-    //       weekdayCounter++; //add 1 to your counter if its not a weekend day
-    //     }
-    //   } else
+      // if (empLocation.includes("Shuweihat")) {
+      //   if (sDate.format("ddd") !== "Sun") {
+      //     weekdayCounter++; //add 1 to your counter if its not a weekend day
+      //   }
+      // } else
        {
         if (sDate.format("ddd") !== "Sat" && sDate.format("ddd") !== "Sun") {
           weekdayCounter++; //add 1 to your counter if its not a weekend day
@@ -143,7 +143,6 @@ export default function LeaveData(props) {
             label="Outgoing Travel Date"
             name="outgoing_travel_date"
             format="DD-MMM-YYYY"
-            minDate={startDate}
             maxDate={endDate}
             slotProps={{
               textField: {
@@ -157,7 +156,6 @@ export default function LeaveData(props) {
             name="incoming_travel_date"
             format="DD-MMM-YYYY"
             minDate={startDate}
-            maxDate={endDate}
             slotProps={{
               textField: {
                 size: "small",
@@ -217,14 +215,18 @@ export default function LeaveData(props) {
           <h2 className="col-span-4 text-lg font-bold text-gray-200">
             D. Flight Booking
           </h2>
-          <Label className="col-span-2" value="BOOKING TO BE MADE BY:" />
+          <Label className="" value="BOOKING TO BE MADE BY:" />
           <div className="flex items-center gap-2">
-            <Radio name="flight_booking" value="COMPANY" />
+            <Radio required  name="flight_booking" value="LOCAL" />
+            <Label htmlFor="flightCompany" value="LOCAL LEAVE" />
+          </div>
+          <div className="flex items-center gap-2">
+            <Radio required  name="flight_booking" value="COMPANY" />
             <Label htmlFor="flightCompany" value="COMPANY" />
           </div>
 
           <div className="flex items-center gap-2">
-            <Radio name="flight_booking" value="OWN" />
+            <Radio required  name="flight_booking" value="OWN" />
             <Label htmlFor="flightOwn" value="OWN" />
           </div>
 
