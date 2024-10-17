@@ -36,7 +36,7 @@ export default class LeaveForm  extends Component {
         pdf.addImage(imgData, "JPEG", 0, 0, 210, 300);
         // pdf.output('dataurlnewwindow');
         pdf.save(this.props.leaveType + " " + this.props.emp_no + " " + this.props.name +".pdf");
-        this.state.isDownloaded = true;
+        this.setState({isDownloaded: true});
       });
     }
   }
@@ -163,11 +163,11 @@ export default class LeaveForm  extends Component {
               <div className="flex">
                 <div className="flex-1">BOOKING TO BE MADE BY:</div>
                 <div className="flex-1 grid grid-cols-3 !px-20">
-                  <div className={"border-black border-2 " + (this.props.ticketBooking=="COMPANY" ? "bg-black" : "")}></div>
+                  <div className={"border-black border-2 " + (this.props.ticketBooking==="COMPANY" ? "bg-black" : "")}></div>
                   <div className="col-span-2">COMPANY</div>
                 </div>
                 <div className="flex-1 grid grid-cols-3  !px-20">
-                  <div className={"border-black border-2 " + (this.props.ticketBooking=="OWN" ? "bg-black" : "")}></div>
+                  <div className={"border-black border-2 " + (this.props.ticketBooking==="OWN" ? "bg-black" : "")}></div>
                   <div className="col-span-2">OWN</div>
                 </div>
               </div>
@@ -229,11 +229,11 @@ export default class LeaveForm  extends Component {
                 <div className="w-3/4 text-left !px-4">Days</div>
               </div>
               <div className="flex w-full text-right !pt-8">
-                <div className="flex-1">Signature of Employee:</div>
+                <div className="flex-1 text-center">HR Manager:</div>
                 <div className="flex-1 border-black border-b-2"></div>
-                <div className="flex-1">Manager:</div>
+                <div className="flex-1 text-center">Finance Manager:</div>
                 <div className="flex-1 border-black border-b-2"></div>
-                <div className="flex-1">Project Director:</div>
+                <div className="flex-1 text-center">Project Director:</div>
                 <div className="flex-1 border-black border-b-2"></div>
               </div>
             </div>

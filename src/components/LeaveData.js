@@ -2,9 +2,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { DatePicker } from "@mui/x-date-pickers";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-import { Radio, Flowbite, Label } from "flowbite-react";
+import { Radio, Label } from "flowbite-react";
 
 export default function LeaveData(props) {
   
@@ -29,11 +29,11 @@ export default function LeaveData(props) {
       //     weekdayCounter++; //add 1 to your counter if its not a weekend day
       //   }
       // } else
-       {
+      //  {
         if (sDate.format("ddd") !== "Sat" && sDate.format("ddd") !== "Sun") {
           weekdayCounter++; //add 1 to your counter if its not a weekend day
         }
-      }
+      // }
       totalCounter++;
       sDate = sDate.add(1, "days"); //increment by one day
     }

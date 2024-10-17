@@ -4,11 +4,11 @@ import { useState, useEffect } from "react";
 import { Flowbite } from "flowbite-react";
 // import Moment from "moment";
 
-import Docxtemplater from "docxtemplater";
-import PizZip from "pizzip";
-import PizZipUtils from "pizzip/utils/index.js";
-import { saveAs } from "file-saver";
-import expressionParser from "docxtemplater/expressions";
+// import Docxtemplater from "docxtemplater";
+// import PizZip from "pizzip";
+// import PizZipUtils from "pizzip/utils/index.js";
+// import { saveAs } from "file-saver";
+// import expressionParser from "docxtemplater/expressions";
 import LeaveForm from './LeaveFormPage';
 
 import gsLogo from "./images/gs-inima-Transparent.png";
@@ -30,7 +30,7 @@ function App() {
   const [empLocation, setEmpLocation] = useState("");
   const [empUAENum, setEmpUAENum] = useState("");
   const [seed, setSeed] = useState(1);
-  const [docBlob, setDocBlob] = useState(null);
+  // const [docBlob, setDocBlob] = useState(null);
   const [subProps, setSubProps] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -65,9 +65,9 @@ function App() {
       });
   }, []);
 
-  function loadFile(url, callback) {
-    PizZipUtils.getBinaryContent(url, callback);
-  }
+  // function loadFile(url, callback) {
+  //   PizZipUtils.getBinaryContent(url, callback);
+  // }
 
   const handleChange = async (e) => {
     // console.log(employeeList["S400069-EX"])
@@ -88,7 +88,7 @@ function App() {
   }
 
   function handleSubmit(event) {
-    
+    setIsDisabled(true);
     const countriesRet = event.target.countries.value;
     setSubProps({
             leaveType: countriesRet,
