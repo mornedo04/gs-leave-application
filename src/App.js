@@ -90,32 +90,37 @@ function App() {
   function handleSubmit(event) {
     setIsDisabled(true);
     const countriesRet = event.target.countries.value;
-    setSubProps({
-            leaveType: countriesRet,
-            name: empName,
-            emp_no: event.target.empID.value,
-            job_title: event.target.empJobTitle.value,
-            doj: event.target.empDOJ.value,
-            location: event.target.empLocation.value,
-            expiration: "",
-            address: event.target.empHomeAddress.value,
-            uae_contact: event.target.empLocalNumber.value,
-            home_contact: event.target.empHomeNumber.value,
-            start_date: event.target.leave_start_date.value,
-            end_date: event.target.leave_end_date.value,
-            outgoing_date: event.target.outgoing_travel_date.value,
-            incoming_date: event.target.incoming_travel_date.value,
-            ex_day: event.target.leaveDays.value,
-            in_day: event.target.totalDays.value,
-            remarks: event.target.remarks.value,
-            ticketBooking: event.target.flight_booking.value,
-            dep_date: event.target.ticket_departure_date.value,
-            dep_airline: event.target.departure_airline.value,
-            dep_sector: event.target.departure_sector.value,
-            ret_date: event.target.ticket_arrival_date.value,
-            ret_airline: event.target.arrival_airline.value,
-            ret_sector: event.target.arrival_sector.value,});
-    setIsSubmitted(true);
+    // if (form.checkValidity() === false) {
+    //   event.preventDefault();
+    //   event.stopPropagation();
+      setSubProps({
+        leaveType: countriesRet,
+        name: empName,
+        emp_no: event.target.empID.value,
+        job_title: event.target.empJobTitle.value,
+        doj: event.target.empDOJ.value,
+        location: event.target.empLocation.value,
+        expiration: "",
+        address: event.target.empHomeAddress.value,
+        uae_contact: event.target.empLocalNumber.value,
+        home_contact: event.target.empHomeNumber.value,
+        start_date: event.target.leave_start_date.value,
+        end_date: event.target.leave_end_date.value,
+        outgoing_date: event.target.outgoing_travel_date.value,
+        incoming_date: event.target.incoming_travel_date.value,
+        ex_day: event.target.leaveDays.value,
+        in_day: event.target.totalDays.value,
+        remarks: event.target.remarks.value,
+        ticketBooking: event.target.flight_booking.value,
+        dep_date: event.target.ticket_departure_date.value,
+        dep_airline: event.target.departure_airline.value,
+        dep_sector: event.target.departure_sector.value,
+        ret_date: event.target.ticket_arrival_date.value,
+        ret_airline: event.target.arrival_airline.value,
+        ret_sector: event.target.arrival_sector.value,});
+        setIsSubmitted(true);
+    // }
+    
     
     // event.preventDefault();
     // loadFile(

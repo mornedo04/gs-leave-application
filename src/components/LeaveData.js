@@ -191,6 +191,7 @@ export default function LeaveData(props) {
               type="text"
               name="totalDays"
               value={tLDiW}
+              max={15}
               id="website-admin"
               className="block w-full min-w-0 flex-1 rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               placeholder="Days"
@@ -239,7 +240,6 @@ export default function LeaveData(props) {
             className="col-span-2 md:col-span-1"
             name="ticket_departure_date"
             format="DD-MMM-YYYY"
-            minDate={startDate}
             maxDate={endDate}
             slotProps={{
               textField: {
@@ -265,7 +265,6 @@ export default function LeaveData(props) {
             name="ticket_arrival_date"
             format="DD-MMM-YYYY"
             minDate={startDate}
-            maxDate={endDate}
             slotProps={{
               textField: {
                 size: "small",
