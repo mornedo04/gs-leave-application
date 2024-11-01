@@ -129,18 +129,19 @@ export default class LeaveForm  extends Component {
           <div className="flex gap-2 w-full !px-14   text-center align-middle">
             <div className="flex-grow grid grid-cols-4">
               <div className="col-span-3 border-black border-r-0   border-2">
-                Total No. Of Leave Days <br /> Excluding weekends / holidays
+                Total No. of Leave Days <br /> Including weekends / holidays
+                {/* Total No. Of Leave Days <br /> Excluding weekends / holidays */}
               </div>
               <div className="flex justify-center items-center border-black border-2">
-              {this.props.ex_day}
+              {this.props.in_day}
               </div>
             </div>
             <div className="flex-grow grid grid-cols-4">
               <div className="col-span-3 border-black border-r-0 border-2">
-                Total No. of Leave Days <br /> Including weekends / holidays
+                {/* Total No. of Leave Days <br /> Including weekends / holidays */}
               </div>
               <div className="flex justify-center items-center border-black border-2">
-              {this.props.in_day}
+              {this.props.ex_day}
               </div>
             </div>
           </div>

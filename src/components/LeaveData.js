@@ -166,13 +166,13 @@ export default function LeaveData(props) {
             <span className="inline-flex w-4/5 items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
               <Label
                 htmlFor="daycount1"
-                value="Total No. of Leave Days Excluding weekends / holidays"
+                value="Total No. of Leave Days Including weekends / holidays"
               />
             </span>
             <input
               type="text"
-              name="leaveDays"
-              value={tLDeW}
+              name="totalDays"
+              value={tLDiW}
               id="website-admin"
               className="block w-full min-w-0 flex-1 rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               placeholder="Days"
@@ -184,18 +184,17 @@ export default function LeaveData(props) {
             <span className="inline-flex w-4/5 items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
               <Label
                 htmlFor="daycount2"
-                value="Total No. of Leave Days Including weekends / holidays"
+                value=""
               />
             </span>
             <input
               type="text"
-              name="totalDays"
-              value={tLDiW}
+              name="leaveDays"
+              value="0"
               max={15}
               id="website-admin"
               className="block w-full min-w-0 flex-1 rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               placeholder="Days"
-              required
             />
           </div>
           <div className="grid grid-cols-1 md:grid-cols-5 md:col-span-2 md:order-7">
