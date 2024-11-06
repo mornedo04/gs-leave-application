@@ -289,7 +289,7 @@ export default function LeaveData(props) {
           className="col-span-2 mt-4 rounded-md bg-gradient-to-r from-indigo-500 to-blue-500 px-4 py-2 font-bold text-white transition duration-150 ease-in-out hover:bg-indigo-600 hover:to-blue-600"
           disabled={props.isDisabled}
         >
-          {props.isDisabled ? "Done!" : "Submit"}
+          {props.isDisabled ? "Done!" : "Download Form"}
         </button>
       </LocalizationProvider>
     </ThemeProvider>
