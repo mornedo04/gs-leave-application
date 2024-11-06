@@ -232,7 +232,7 @@ export default class LeaveForm extends Component {
                     <div></div>
                     <div>Date</div>
                     <div>Airline</div>
-                    <div className="col-span-2">Section</div>
+                    <div className="col-span-2">Sector</div>
 
                     <div>Departure</div>
                     <div className="border-black border-2 border-r-0 text-center">
