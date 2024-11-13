@@ -12,6 +12,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "angular-expressions": "^1.2.1",
+    "axios": "^1.7.7",
     "dayjs": "^1.11.12",
     "docxtemplater": "^3.49.1",
     "file-saver": "^2.0.5",

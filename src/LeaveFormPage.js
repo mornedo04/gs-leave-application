@@ -1,5 +1,6 @@
 // import logo from "./logo.svg";
 import React, { Component, useState } from "react";
+import axios from 'axios';
 
 import gsLogo from "./images/gs-inima-Transparent.png";
 import LeaveTypeCheckBox from "./components/LeaveTypeCheckBox";
@@ -11,6 +12,7 @@ export default class LeaveForm extends Component {
     super(props);
     this.state = { isDownloaded: false };
   }
+  //${process.env.PUBLIC_URL}/LeaveForms
 
   printDocument() {
     const input = document.getElementById("divToPrint");
@@ -19,12 +21,34 @@ export default class LeaveForm extends Component {
       const pdf = new jsPDF();
       pdf.addImage(imgData, "JPEG", 0, 0, 210, 300);
       // pdf.output('dataurlnewwindow');
-      pdf.save("download.pdf");
+      var blob = pdf.output('blob');
+      var formData = new FormData();
+      formData.append('pdf', blob);
+      const url = "/LeaveForms";
+      const formData2 = new FormData();
+      formData2.append('file', formData);
+      formData2.append('fileName', this.props.leaveType +
+        " " +
+        this.props.emp_no +
+        " " +
+        this.props.name +
+        ".pdf");
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      };
+      axios.post(url, formData2, config).then((response) => {
+        console.log(response.data);
+      });
+
+      // pdf.save("download.pdf");
     });
   }
 
   componentDidMount() {
     // call api or anything
+    // e.preventDefault();
     if (!this.state.isDownloaded) {
       window.scrollTo(0, 0);
       const input = document.getElementById("divToPrint");
@@ -41,7 +65,16 @@ export default class LeaveForm extends Component {
             this.props.name +
             ".pdf"
         );
-        this.setState({ isDownloaded: true });
+        
+      var string = pdf.output('blob');
+
+      // console.log(string)
+      const fileURL = URL.createObjectURL(string);
+
+      window.open(fileURL);
+
+
+      this.setState({ isDownloaded: true });
       });
     }
   }
