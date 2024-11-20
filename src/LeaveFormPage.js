@@ -1,6 +1,6 @@
 // import logo from "./logo.svg";
 import React, { Component, useState } from "react";
-import axios from 'axios';
+// import axios from 'axios';
 
 import gsLogo from "./images/gs-inima-Transparent.png";
 import LeaveTypeCheckBox from "./components/LeaveTypeCheckBox";
@@ -19,30 +19,14 @@ export default class LeaveForm extends Component {
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF();
+      let filename = this.props.leaveType +
+      " " +
+      this.props.emp_no +
+      " " +
+      this.props.name +
+      ".pdf"
       pdf.addImage(imgData, "JPEG", 0, 0, 210, 300);
-      // pdf.output('dataurlnewwindow');
-      var blob = pdf.output('blob');
-      var formData = new FormData();
-      formData.append('pdf', blob);
-      const url = "/LeaveForms";
-      const formData2 = new FormData();
-      formData2.append('file', formData);
-      formData2.append('fileName', this.props.leaveType +
-        " " +
-        this.props.emp_no +
-        " " +
-        this.props.name +
-        ".pdf");
-      const config = {
-        headers: {
-          'content-type': 'multipart/form-data',
-        },
-      };
-      axios.post(url, formData2, config).then((response) => {
-        console.log(response.data);
-      });
-
-      // pdf.save("download.pdf");
+      pdf.save(filename);
     });
   }
 
@@ -293,11 +277,11 @@ export default class LeaveForm extends Component {
               </div>
 
               <div className="flex w-full text-right !px-4 !pt-6">
-                <div className="flex-1">Signature of Employee:</div>
+                <div className="flex-2">Signature of Employee:</div>
                 <div className="flex-1 border-black border-b-2"></div>
-                <div className="flex-1">Manager:</div>
+                <div className="flex-1 text-center">Manager:</div>
                 <div className="flex-1 border-black border-b-2"></div>
-                <div className="flex-1">Project Director:</div>
+                <div className="flex-2">Site Manager / Project Director:</div>
                 <div className="flex-1 border-black border-b-2"></div>
               </div>
 
