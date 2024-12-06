@@ -238,6 +238,7 @@ function App() {
               value={empID}
               className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
               placeholder="Employee Number"
+              disabled
             />
             <input
               type="text"
@@ -245,6 +246,7 @@ function App() {
               value={empJobTitle}
               className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
               placeholder="Job Title"
+              disabled
             />
             <input
               type="text"
@@ -252,6 +254,7 @@ function App() {
               value={empDOJ}
               className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
               placeholder="Date of Joining"
+              disabled
             />
             <input
               type="text"
@@ -259,12 +262,14 @@ function App() {
               value={empLocation}
               className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
               placeholder="Project / Location"
+              disabled
             />
             <input
               name="visaExpiration"
               type="text"
               className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
               placeholder="Visa Expiration"
+              disabled
             />
           </section>
           <div style={ hideData
