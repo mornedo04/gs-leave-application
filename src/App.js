@@ -2,6 +2,10 @@
 import "./App.css";
 import { useState, useEffect } from "react";
 import { Flowbite } from "flowbite-react";
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
+import { jwtDecode } from "jwt-decode";
+import Login from "./components/login";
+
 // import Moment from "moment";
 
 // import Docxtemplater from "docxtemplater";
@@ -33,6 +37,9 @@ function App() {
   // const [docBlob, setDocBlob] = useState(null);
   const [subProps, setSubProps] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const [ user, setUser ] = useState([]);
+  const [ profile, setProfile ] = useState([]);
 
   const reset = () => {
        setSeed(Math.random());
@@ -189,7 +196,25 @@ function App() {
 
   return (
     <>{isSubmitted ? <LeaveForm {...subProps} /> : <Flowbite theme={{ mode: "dark" }}>
+      {/* <div className="w-full bg-sky-500 flex items-center justify-center top-0 sticky" >
+        <h1 className="flex-auto" >Hello</h1>
+        <h1 className="flex-auto">Hello2</h1>
+      {user.length == 0 ?
+    <Login
+        className="flex-auto"
+        onSuccess={credentialResponse => {
+          console.log("Login Success")
+          // console.log(credentialResponse);
+          const credResDecode = jwtDecode(credentialResponse.credential);
+          console.log(credResDecode);
+          setUser(credResDecode);
+        }}
+      /> :
+      <div>Hi {user.given_name}!</div>}
+      </div> */}
     <main className="flex flex-col min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
+      
+    
       <img src={gsLogo} className="h-20" alt="GS Inima LOGO" />
       <h2 className="text-center text-lg font-bold text-gray-200">
         HR & Administration Department
