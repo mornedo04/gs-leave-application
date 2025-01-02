@@ -243,6 +243,7 @@ function App() {
                 <option value="RL">Rotation Leave</option>
                 <option value="EL">Emergency Leave</option>
                 <option value="PL">Paternity Leave</option>
+                <option value="CML">Compensatory Leave</option>
                 <option value="CL">Compassionate Leave</option>
               </select>
             </div>
@@ -302,7 +303,7 @@ function App() {
               : { maxHeight: "100rem",  transition: "max-height 2s ease-out"}}
               className="overflow-hidden"
               >
-          <LeaveData key={seed} isDisabled={isDisabled} empUAENum={empUAENum} />
+          <LeaveData key={seed} isDisabled={isDisabled} empUAENum={empUAENum} leaveTpe={leaveTpe} />
           </div>
           
         </form>

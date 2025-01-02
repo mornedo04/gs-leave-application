@@ -199,7 +199,7 @@ export default function LeaveData(props) {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-5 md:col-span-2 md:order-7">
             <span className="inline-flex items-center rounded-s-md border border-e-0 border-gray-300 bg-gray-200 px-3 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-600 dark:text-gray-400">
-              <Label htmlFor="remarks" value="Reason for Leave" />
+              <Label htmlFor="remarks" value={props.leaveTpe=="CML" ? "Reason for Compensatory Leave" : "Reason for Leave"} />
             </span>
             <input
               type="text"
@@ -207,6 +207,9 @@ export default function LeaveData(props) {
               id="website-admin"
               className="block col-span-1 md:col-span-4 w-full min-w-0 flex-1 rounded-none rounded-e-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder:text-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
               placeholder=""
+              onInvalid={F=> F.target.setCustomValidity("Please give the Date and Reason of the Compensatory Leave")}
+              onInput={F => F.target.setCustomValidity('')} 
+              required = {props.leaveTpe=="CML" ? true : false}
             />
           </div>
         </section>

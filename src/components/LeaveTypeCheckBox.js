@@ -9,10 +9,12 @@ export default function LeaveTypeCheckBox(props) {
           <div>Rotation Leave</div>
           <div className={"border-black border-2 " + (props.leaveType==="EL"?"bg-black":"")}></div>
           <div>Emergency Leave</div>
-          <div className="col-span-4"></div>
+          <div className="col-span-1"></div>
           <div className=""></div>
           <div className={"border-black border-2 " + (props.leaveType==="PL"?"bg-black":"")}></div>
           <div>Paternity Leave</div>
+          <div className={"border-black border-2 " + (props.leaveType==="CML"?"bg-black":"")}></div>
+          <div>Compensatory Leave</div>
           <div className={"border-black border-2 " + (props.leaveType==="CL"?"bg-black":"")}></div>
           <div>Compassionate Leave</div>
         </div>
