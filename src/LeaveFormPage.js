@@ -370,9 +370,7 @@ export default class LeaveForm extends Component {
                 </div>
               </div>
               <div className="text-base text-blue-900 font-bold">
-                GS Inima Desalination LLC, Office No 1211, 12 Floor, Addax
-                Tower, Al Reem Island Abu Dhabi UAE +971 2 58 1148 The end. The
-                end.
+                GS Inima Desalination LLC, Office No 903, 9th Floor, Abdulla Bin Darwish Bldg., Hamdan Bin Mohammed St. 802, Al Zahiya, Abu Dhabi
               </div>
             </div>
           </>
