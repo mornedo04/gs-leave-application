@@ -279,7 +279,7 @@ export default class LeaveForm extends Component {
               <div className="flex w-full text-right !px-4 !pt-6">
                 <div className="flex-2">Signature of Employee:</div>
                 <div className="flex-1 border-black border-b-2"></div>
-                <div className="flex-1 text-center">Manager:</div>
+                <div className="flex-1 text-center">Dep. Head / Manager:</div>
                 <div className="flex-1 border-black border-b-2"></div>
                 <div className="flex-2">Site Manager / Project Director:</div>
                 <div className="flex-1 border-black border-b-2"></div>
