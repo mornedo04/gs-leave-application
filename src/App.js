@@ -47,10 +47,8 @@ function App() {
 
 
   useEffect(() => {
-    // console.log(process.env.GOOGLE_SHEET_API)
     fetch(
-      "https://sheets.googleapis.com/v4/spreadsheets/18YH_yqURS0HweGXsMqNDD7MLG3k3iCBHjRVU0YQoGbE/values/Sheet1?key=" + process.env.GOOGLE_SHEET_API
-      
+      "https://sheets.googleapis.com/v4/spreadsheets/18YH_yqURS0HweGXsMqNDD7MLG3k3iCBHjRVU0YQoGbE/values/Sheet1?key=AIzaSyD50XvDxba5DgRl6JqYrOU9XL-Eb0CJRmU"
     )
       .then((res) => {
         return res.json();
