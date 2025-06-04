@@ -104,31 +104,31 @@ function App() {
   };
 
   function handleSubmit(event) {
+    event.preventDefault();
     setIsDisabled(true);
     const countriesRet = event.target.leave_type.value;
     // if (form.checkValidity() === false) {
     //   event.preventDefault();
     //   event.stopPropagation();
 
-    // fetch("https://www.desalinationleaverecords.online/v1/leave", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     start_date: event.target.start_date.value,
-    //     end_date: event.target.end_date.value,
-    //     days_less_holiday: event.target.days_less_holiday.value,
-    //     total_days: event.target.total_days.value,
-    //     departure_date: event.target.departure_date.value,
-    //     arrival_date: event.target.arrival_date.value,
-    //     leave_type: countriesRet,
-    //     employee_id: event.target.employee_id.value,
-    //   }),
-    //   headers: {
-    //     "Content-type": "application/json",
-    //   },
-    // }).then((res) => {
-    //   console.log(res.json());
-    //   return res.json();
-    // });
+    fetch("https://www.desalinationleaverecords.online/v1/leave", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        start_date: event.target.start_date.value,
+        end_date: event.target.end_date.value,
+        days_less_holiday: event.target.days_less_holiday.value,
+        total_days: event.target.total_days.value,
+        departure_date: event.target.departure_date.value,
+        arrival_date: event.target.arrival_date.value,
+        leave_type: countriesRet,
+        employee_id: event.target.employee_id.value,
+      }),
+    }).then((res) => {
+      console.log("post Result: " + res.json());
+    });
 
     setSubProps({
       leaveType: countriesRet,
@@ -145,7 +145,7 @@ function App() {
       end_date: event.target.end_date.value,
       outgoing_date: event.target.departure_date.value,
       incoming_date: event.target.arrival_date.value,
-      ex_day: event.target.leaveDays.value,
+      ex_day: event.target.total_days.value,
       in_day: event.target.total_days.value,
       remarks: event.target.remarks.value,
       ticketBooking: event.target.flight_booking.value,
@@ -190,7 +190,7 @@ function App() {
               Leave Application Form
             </h2>
             <div className="w-full max-w-5xl rounded-lg bg-gray-800 p-6 shadow-md">
-              <form className="" onSubmit={handleSubmit} method="post">
+              <form className="" onSubmit={handleSubmit}>
                 {/* Leave Request Information */}
                 <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <h2 className="text-lg font-bold text-gray-200 md:col-span-2">
