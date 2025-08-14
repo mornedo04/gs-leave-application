@@ -116,7 +116,7 @@ function App() {
       }&name=${empName}&start_date=${
         event.target.leave_start_date.value
       }&end_date=${
-        event.target.leave_start_date.value
+        event.target.leave_end_date.value
       }&type=${countriesRet}&ticketBooking=${
         event.target.flight_booking.value
       }`,
