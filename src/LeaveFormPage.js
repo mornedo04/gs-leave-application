@@ -6,6 +6,7 @@ import gsLogo from "./images/gs-inima-Transparent.png";
 import LeaveTypeCheckBox from "./components/LeaveTypeCheckBox";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
+import moment from "moment/moment";
 
 export default class LeaveForm extends Component {
   constructor(props) {
@@ -19,12 +20,13 @@ export default class LeaveForm extends Component {
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF();
-      let filename = this.props.leaveType +
-      " " +
-      this.props.emp_no +
-      " " +
-      this.props.name +
-      ".pdf"
+      let filename =
+        this.props.leaveType +
+        " " +
+        this.props.emp_no +
+        " " +
+        this.props.name +
+        ".pdf";
       pdf.addImage(imgData, "JPEG", 0, 0, 210, 300);
       pdf.save(filename);
     });
@@ -49,16 +51,15 @@ export default class LeaveForm extends Component {
             this.props.name +
             ".pdf"
         );
-        
-      var string = pdf.output('blob');
 
-      // console.log(string)
-      const fileURL = URL.createObjectURL(string);
+        var string = pdf.output("blob");
 
-      window.open(fileURL);
+        // console.log(string)
+        const fileURL = URL.createObjectURL(string);
 
+        window.open(fileURL);
 
-      this.setState({ isDownloaded: true });
+        this.setState({ isDownloaded: true });
       });
     }
   }
@@ -72,14 +73,14 @@ export default class LeaveForm extends Component {
 
         {this.state.isDownloaded ? (
           <>
-          <div class="flex h-screen">
-            <div className="text-center font-bold m-auto">
-              <p className="text-4xl ">
-                The Leave Application Form has been downloaded. Kindly sign it
-                and obtain the necessary signature from Management.
-              </p>
-              <p className="text-5xl p-10">Thank you!</p>
-            </div>
+            <div class="flex h-screen">
+              <div className="text-center font-bold m-auto">
+                <p className="text-4xl ">
+                  The Leave Application Form has been downloaded. Kindly sign it
+                  and obtain the necessary signature from Management.
+                </p>
+                <p className="text-5xl p-10">Thank you!</p>
+              </div>
             </div>
           </>
         ) : (
@@ -122,9 +123,9 @@ export default class LeaveForm extends Component {
                 <div className="border-black border-2 col-span-3 text-center">
                   {this.props.location}
                 </div>
-                <div>Visa Expiration:</div>
+                <div>Creation Date:</div>
                 <div className="border-black border-2 col-span-2 text-center">
-                  {this.props.expiration}
+                  {moment().format("DD-MMM-YYYY")}
                 </div>
               </div>
 
@@ -370,7 +371,8 @@ export default class LeaveForm extends Component {
                 </div>
               </div>
               <div className="text-base text-blue-900 font-bold">
-                GS Inima Desalination LLC, Office No 903, 9th Floor, Abdulla Bin Darwish Bldg., Hamdan Bin Mohammed St. 802, Al Zahiya, Abu Dhabi
+                GS Inima Desalination LLC, Office No 903, 9th Floor, Abdulla Bin
+                Darwish Bldg., Hamdan Bin Mohammed St. 802, Al Zahiya, Abu Dhabi
               </div>
             </div>
           </>
