@@ -123,7 +123,7 @@ export default class LeaveForm extends Component {
                 <div className="border-black border-2 col-span-3 text-center">
                   {this.props.location}
                 </div>
-                <div>Creation Date:</div>
+                <div>Date:</div>
                 <div className="border-black border-2 col-span-2 text-center">
                   {moment().format("DD-MMM-YYYY")}
                 </div>
