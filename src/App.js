@@ -105,8 +105,9 @@ function App() {
     // if (form.checkValidity() === false) {
     //   event.preventDefault();
     //   event.stopPropagation();
+    // https://script.google.com/macros/s/AKfycbzKb4MRo_GoD9ZUBurUtf23z-bJSayh1gII9wW1d2LzsWx_rMzqODsjaIMMa2BH3LQQ/exec
     const url =
-      "https://script.google.com/macros/s/AKfycbzKb4MRo_GoD9ZUBurUtf23z-bJSayh1gII9wW1d2LzsWx_rMzqODsjaIMMa2BH3LQQ/exec";
+      "https://script.google.com/macros/s/AKfycbwdFufGrXHyXQwVir7A11FdKcVz-Y7uZBv1GnVEqNwi6OWl6tK-sw3r-egXrQ4GhkFA/exec";
 
     fetch(url, {
       method: "POST",
