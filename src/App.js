@@ -37,6 +37,7 @@ function App() {
   // const [docBlob, setDocBlob] = useState(null);
   const [subProps, setSubProps] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [user, setUser] = useState([]);
   const [profile, setProfile] = useState([]);
@@ -47,32 +48,33 @@ function App() {
 
   useEffect(() => {
     fetch(
-      "https://sheets.googleapis.com/v4/spreadsheets/18YH_yqURS0HweGXsMqNDD7MLG3k3iCBHjRVU0YQoGbE/values/Sheet1?key=AIzaSyD50XvDxba5DgRl6JqYrOU9XL-Eb0CJRmU"
+      "https://script.googleusercontent.com/a/macros/inima.com/echo?user_content_key=AehSKLhH-oaBPw8fndQP0T3ObB29wQUFqsKo4RjPRXEAmaKZH8NKvAl6bBxiAdF3_RE8iZZyBlSGCOSMfTE47KIH3cEQ6BrFExOeXV9uPmfGen7aPEPHsdllFY2p0LJFjBsukqRycCNmp-g4UOV0kCvMC6U2OZn3T9PdWM-nQvgeYuj7VgEzWDTxIwgi9EUvCCO9T_57tp9GxkNxL0JLpYBDrygjjwC9PtvCW1DvnfIo0X8UQr7cLCVomdxQElDleTLTIK3CjjrrbQmpbJVB-LNQm5uy0NbL43WrGNRUm1Haa0J2uKoV9MU&lib=M6Xf3upszlRvrqQl4Vhhcn5oa_oYwBZZ-"
     )
       .then((res) => {
         return res.json();
       })
       .then((data) => {
-        // console.log(data["values"]);
+        console.log(data);
         const results = [];
         const dicResult = {};
-        data["values"].forEach((value) => {
+        data.forEach((value) => {
           if (value[1] !== "Emp Name") {
             results.push({
-              key: value[1],
-              value: value[0],
+              key: value["name"],
+              value: value["id"],
             });
-            dicResult[value[0]] = [
-              value[1],
-              value[3],
-              value[2],
-              value[10],
-              value[8],
+            dicResult[value["id"]] = [
+              value["name"],
+              value["position"],
+              value["doj"],
+              "Shuweihat Abu Dhabi",
+              value["number"],
             ];
           }
         });
         setOptions([{ key: "Employee Name", value: "" }, ...results]);
         setEmployeeList(dicResult);
+        setIsLoading(false);
         // setPhotos(data);
       });
   }, []);
@@ -228,22 +230,6 @@ function App() {
         <LeaveForm {...subProps} />
       ) : (
         <Flowbite theme={{ mode: "dark" }}>
-          {/* <div className="w-full bg-sky-500 flex items-center justify-center top-0 sticky" >
-        <h1 className="flex-auto" >Hello</h1>
-        <h1 className="flex-auto">Hello2</h1>
-      {user.length == 0 ?
-    <Login
-        className="flex-auto"
-        onSuccess={credentialResponse => {
-          console.log("Login Success")
-          // console.log(credentialResponse);
-          const credResDecode = jwtDecode(credentialResponse.credential);
-          console.log(credResDecode);
-          setUser(credResDecode);
-        }}
-      /> :
-      <div>Hi {user.given_name}!</div>}
-      </div> */}
           <main className="flex flex-col min-h-screen items-center justify-center gap-2 dark:bg-gray-800">
             <img src={gsLogo} className="h-20" alt="GS Inima LOGO" />
             <h2 className="text-center text-lg font-bold text-gray-200">
@@ -252,105 +238,129 @@ function App() {
             <h2 className="text-center text-lg font-bold text-gray-200">
               Leave Application Form
             </h2>
-            <div className="w-full max-w-5xl rounded-lg bg-gray-800 p-6 shadow-md">
-              <form className="" onSubmit={handleSubmit} method="post">
-                {/* Leave Request Information */}
-                <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <h2 className="text-lg font-bold text-gray-200 md:col-span-2">
-                    A. Leave Request Information
-                  </h2>
-                  <div className="md:col-span-2">
+
+            {isLoading ? (
+              <div class="mx-auto w-[600px] bg-gray-950 rounded-xl overflow-hidden">
+                <div class="flex dark:bg-gray-800 p-8 justify-center items-center h-[450px]">
+                  <div class="text-center space-y-6">
+                    <div class="w-24 h-24 border-4 border-t-[#00e600] border-gray-700 rounded-full animate-spin mx-auto"></div>
+                    <div class="text-[#00e600] font-semibold text-4xl opacity-90 animate-fadeIn">
+                      Loading Data...
+                    </div>
+                    <div class="text-[#9e9e9e] text-sm opacity-80 animate-fadeIn">
+                      <p>We're getting everything ready for you...</p>
+                      <p>Sit tight for just a moment.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bg-[#202020] p-4 text-center text-gray-400 text-xs font-mono">
+                  <p>Appreciate your patience. Almost there!</p>
+                </div>
+              </div>
+            ) : (
+              <div className="w-full max-w-5xl rounded-lg bg-gray-800 p-6 shadow-md">
+                <form className="" onSubmit={handleSubmit} method="post">
+                  {/* Leave Request Information */}
+                  <section className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <h2 className="text-lg font-bold text-gray-200 md:col-span-2">
+                      A. Leave Request Information
+                    </h2>
+                    <div className="md:col-span-2">
+                      <select
+                        id="countries"
+                        name="countries"
+                        onChange={handleLeaveType}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        required
+                      >
+                        <option value="">Leave Type</option>
+                        <option value="AL">Annual Leave</option>
+                        <option value="SL">Sick Leave</option>
+                        <option value="RL">Rotation Leave</option>
+                        <option value="EL">Emergency Leave</option>
+                        <option value="PL">Paternity Leave</option>
+                        <option value="CML">Compensatory Leave</option>
+                        <option value="CL">Compassionate Leave</option>
+                      </select>
+                    </div>
+
                     <select
-                      id="countries"
-                      name="countries"
-                      onChange={handleLeaveType}
+                      onChange={handleChange}
+                      name="empName"
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                       required
                     >
-                      <option value="">Leave Type</option>
-                      <option value="AL">Annual Leave</option>
-                      <option value="SL">Sick Leave</option>
-                      <option value="RL">Rotation Leave</option>
-                      <option value="EL">Emergency Leave</option>
-                      <option value="PL">Paternity Leave</option>
-                      <option value="CML">Compensatory Leave</option>
-                      <option value="CL">Compassionate Leave</option>
+                      {options.map((option) => {
+                        return (
+                          <option value={option.value}>{option.key}</option>
+                        );
+                      })}
                     </select>
-                  </div>
-
-                  <select
-                    onChange={handleChange}
-                    name="empName"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    required
+                    <input
+                      type="text"
+                      name="empID"
+                      value={empID}
+                      className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      placeholder="Employee Number"
+                      disabled
+                    />
+                    <input
+                      type="text"
+                      name="empJobTitle"
+                      value={empJobTitle}
+                      className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      placeholder="Job Title"
+                      disabled
+                    />
+                    <input
+                      type="text"
+                      name="empDOJ"
+                      value={empDOJ}
+                      className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      placeholder="Date of Joining"
+                      disabled
+                    />
+                    <input
+                      type="text"
+                      name="empLocation"
+                      value={empLocation}
+                      className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      placeholder="Project / Location"
+                      disabled
+                    />
+                    <input
+                      name="visaExpiration"
+                      type="text"
+                      className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      placeholder="Visa Expiration"
+                      disabled
+                    />
+                  </section>
+                  <div
+                    style={
+                      hideData
+                        ? {
+                            maxHeight: "0rem",
+                            transition: "max-height 2s ease-out",
+                          }
+                        : {
+                            maxHeight: "100rem",
+                            transition: "max-height 2s ease-out",
+                          }
+                    }
+                    className="overflow-hidden"
                   >
-                    {options.map((option) => {
-                      return <option value={option.value}>{option.key}</option>;
-                    })}
-                  </select>
-                  <input
-                    type="text"
-                    name="empID"
-                    value={empID}
-                    className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="Employee Number"
-                    disabled
-                  />
-                  <input
-                    type="text"
-                    name="empJobTitle"
-                    value={empJobTitle}
-                    className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="Job Title"
-                    disabled
-                  />
-                  <input
-                    type="text"
-                    name="empDOJ"
-                    value={empDOJ}
-                    className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="Date of Joining"
-                    disabled
-                  />
-                  <input
-                    type="text"
-                    name="empLocation"
-                    value={empLocation}
-                    className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="Project / Location"
-                    disabled
-                  />
-                  <input
-                    name="visaExpiration"
-                    type="text"
-                    className="w-full rounded-md border-0 bg-gray-700 p-2 text-gray-200 transition duration-150 ease-in-out focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                    placeholder="Visa Expiration"
-                    disabled
-                  />
-                </section>
-                <div
-                  style={
-                    hideData
-                      ? {
-                          maxHeight: "0rem",
-                          transition: "max-height 2s ease-out",
-                        }
-                      : {
-                          maxHeight: "100rem",
-                          transition: "max-height 2s ease-out",
-                        }
-                  }
-                  className="overflow-hidden"
-                >
-                  <LeaveData
-                    key={seed}
-                    isDisabled={isDisabled}
-                    empUAENum={empUAENum}
-                    leaveTpe={leaveTpe}
-                  />
-                </div>
-              </form>
-            </div>
+                    <LeaveData
+                      key={seed}
+                      isDisabled={isDisabled}
+                      empUAENum={empUAENum}
+                      leaveTpe={leaveTpe}
+                    />
+                  </div>
+                </form>
+              </div>
+            )}
           </main>
         </Flowbite>
       )}
