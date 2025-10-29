@@ -214,11 +214,13 @@ export default function LeaveData(props) {
               placeholder=""
               onInvalid={(F) =>
                 F.target.setCustomValidity(
-                  "Please give the Date and Reason of the Compensatory Leave"
+                  "Please give the Valid Reason for your Leave"
                 )
               }
               onInput={(F) => F.target.setCustomValidity("")}
-              required={props.leaveTpe == "CML" ? true : false}
+              required={
+                props.leaveTpe == "CML" || props.leaveTpe == "EL" ? true : false
+              }
             />
           </div>
         </section>
