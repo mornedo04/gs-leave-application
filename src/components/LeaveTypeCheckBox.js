@@ -51,7 +51,7 @@ export default function LeaveTypeCheckBox(props) {
           (props.leaveType === "CL" ? "bg-black" : "")
         }
       ></div>
-      <div>Compassionate</div>
+      <div className="text-nowrap">Compassionate Leave</div>
     </div>
   );
 }
