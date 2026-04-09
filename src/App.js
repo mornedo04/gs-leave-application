@@ -46,9 +46,11 @@ function App() {
     setSeed(Math.random());
   };
 
+
+
   useEffect(() => {
     fetch(
-      "https://script.googleusercontent.com/a/macros/inima.com/echo?user_content_key=AehSKLhH-oaBPw8fndQP0T3ObB29wQUFqsKo4RjPRXEAmaKZH8NKvAl6bBxiAdF3_RE8iZZyBlSGCOSMfTE47KIH3cEQ6BrFExOeXV9uPmfGen7aPEPHsdllFY2p0LJFjBsukqRycCNmp-g4UOV0kCvMC6U2OZn3T9PdWM-nQvgeYuj7VgEzWDTxIwgi9EUvCCO9T_57tp9GxkNxL0JLpYBDrygjjwC9PtvCW1DvnfIo0X8UQr7cLCVomdxQElDleTLTIK3CjjrrbQmpbJVB-LNQm5uy0NbL43WrGNRUm1Haa0J2uKoV9MU&lib=M6Xf3upszlRvrqQl4Vhhcn5oa_oYwBZZ-"
+      `https://script.googleusercontent.com/a/macros/inima.com/echo?user_content_key=${process.env.GOOGLE_SHEET_API}`
     )
       .then((res) => {
         return res.json();
@@ -109,7 +111,7 @@ function App() {
     //   event.stopPropagation();
     // https://script.google.com/macros/s/AKfycbzKb4MRo_GoD9ZUBurUtf23z-bJSayh1gII9wW1d2LzsWx_rMzqODsjaIMMa2BH3LQQ/exec
     const url =
-      "https://script.google.com/macros/s/AKfycbwdFufGrXHyXQwVir7A11FdKcVz-Y7uZBv1GnVEqNwi6OWl6tK-sw3r-egXrQ4GhkFA/exec";
+      `https://script.google.com/macros/s/${process.env.GOOGLE_APP_SCRIPT}/exec`;
 
     fetch(url, {
       method: "POST",
