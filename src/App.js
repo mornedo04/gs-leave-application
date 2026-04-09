@@ -41,6 +41,7 @@ function App() {
 
   const [user, setUser] = useState([]);
   const [profile, setProfile] = useState([]);
+  const apiUrl = process.env.REACT_APP_GOOGLE_APP_SCRIPT3
 
   const reset = () => {
     setSeed(Math.random());
@@ -51,7 +52,7 @@ function App() {
     //   `https://script.googleusercontent.com/a/macros/inima.com/echo?user_content_key=${process.env.GOOGLE_SHEET_API}`
     // )
     fetch(
-      `https://script.google.com/macros/s/${process.env.GOOGLE_SHEET_API3}/exec`
+      `https://script.google.com/macros/s/${apiUrl}/exec`
     )
       .then((res) => {
         return res.json();
@@ -111,7 +112,7 @@ function App() {
     //   event.preventDefault();
     //   event.stopPropagation();
     const url =
-      `https://script.google.com/macros/s/${process.env.GOOGLE_APP_SCRIPT}/exec`;
+      `https://script.google.com/macros/s/${process.env.REACT_APP_GOOGLE_APP_SCRIPT}/exec`;
 
     fetch(url, {
       method: "POST",
