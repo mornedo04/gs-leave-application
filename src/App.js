@@ -46,11 +46,12 @@ function App() {
     setSeed(Math.random());
   };
 
-
-
   useEffect(() => {
+    // fetch(
+    //   `https://script.googleusercontent.com/a/macros/inima.com/echo?user_content_key=${process.env.GOOGLE_SHEET_API}`
+    // )
     fetch(
-      `https://script.googleusercontent.com/a/macros/inima.com/echo?user_content_key=${process.env.GOOGLE_SHEET_API}`
+      `https://script.google.com/macros/s/${process.env.GOOGLE_SHEET_API3}/exec`
     )
       .then((res) => {
         return res.json();
@@ -109,7 +110,6 @@ function App() {
     // if (form.checkValidity() === false) {
     //   event.preventDefault();
     //   event.stopPropagation();
-    // https://script.google.com/macros/s/AKfycbzKb4MRo_GoD9ZUBurUtf23z-bJSayh1gII9wW1d2LzsWx_rMzqODsjaIMMa2BH3LQQ/exec
     const url =
       `https://script.google.com/macros/s/${process.env.GOOGLE_APP_SCRIPT}/exec`;
 
