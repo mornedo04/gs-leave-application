@@ -125,7 +125,7 @@ export default class LeaveForm extends Component {
                 </div>
                 <div>Date:</div>
                 <div className="border-black border-2 col-span-2 text-center">
-                  {/* {moment().format("DD-MMM-YYYY")} */}
+                  {moment().format("DD-MMM-YYYY")} 
                 </div>
               </div>
 
